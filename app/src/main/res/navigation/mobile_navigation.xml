@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.edupulse.presentation.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_personal_library"
+        android:name="com.example.edupulse.presentation.ui.personal_library.PersonalLibraryFragment"
+        tools:layout="@layout/fragment_personal_library" />
+    <fragment
+        android:id="@+id/navigation_sittings"
+        android:name="com.example.edupulse.presentation.ui.sittings.SittingsFragment"
+        tools:layout="@layout/fragment_sittings" />
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.example.edupulse.presentation.ui.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/navigation_static"
+        android:name="com.example.edupulse.presentation.ui.progress.StaticFragment"
+        android:label="fragment_static"
+        tools:layout="@layout/fragment_static" />
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.edupulse.presentation.ui.auth.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.example.edupulse.presentation.ui.auth.AuthenticationFragment"
+        android:label="fragment_authentication"
+        tools:layout="@layout/fragment_authentication" />
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.example.edupulse.presentation.ui.onBoarding.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.edupulse.presentation.ui.sittings.edit.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.example.edupulse.presentation.ui.home.library.LibraryFragment"
+        android:label="fragment_library"
+        tools:layout="@layout/fragment_library" />
+    <fragment
+        android:id="@+id/tasksFragment"
+        android:name="com.example.edupulse.presentation.ui.home.tasks.TasksFragment"
+        android:label="fragment_tasks"
+        tools:layout="@layout/fragment_tasks" />
+    <fragment
+        android:id="@+id/chaptersFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.ChaptersFragment"
+        android:label="fragment_chapters"
+        tools:layout="@layout/fragment_chapters" />
+    <fragment
+        android:id="@+id/individualTasksFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.individual.IndividualTasksFragment"
+        android:label="fragment_individual_tasks"
+        tools:layout="@layout/fragment_individual_tasks" />
+</navigation>

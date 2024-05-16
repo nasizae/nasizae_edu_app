@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.progress.StaticFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/montserrat_alternates"
+                android:text="@string/statistic"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    app:cardElevation="16dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:cardCornerRadius="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/container_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            app:cardCornerRadius="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/img_user"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/image_profile" />
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:id="@+id/tv_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/baff"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/container_image"
+                            app:layout_constraintTop_toTopOf="@id/container_image"
+                            tools:text="Насиза Эмиль" />
+
+                        <TextView
+                            android:id="@+id/tv_userEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toEndOf="@id/container_image"
+                            app:layout_constraintTop_toBottomOf="@id/tv_username"
+                            tools:text="nasiza@gmail.com" />
+
+                        <ProgressBar
+                            android:id="@+id/progress_static_user"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="60dp"
+                            android:layout_marginVertical="40dp"
+                            android:max="800"
+                            android:progress="0"
+                            android:progressDrawable="@drawable/progress_bar_style"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/container_image" />
+                        <TextView
+                            android:id="@+id/tv_progress_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100"
+                            app:layout_constraintStart_toStartOf="@id/progress_static_user"
+                            app:layout_constraintEnd_toEndOf="@id/progress_static_user"
+                            app:layout_constraintTop_toTopOf="@id/progress_static_user"
+                            app:layout_constraintBottom_toBottomOf="@id/progress_static_user"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"/>
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:src="@drawable/ic_lightning"
+                            app:layout_constraintBottom_toBottomOf="@id/progress_static_user"
+                            app:layout_constraintStart_toEndOf="@id/progress_static_user"
+                            app:layout_constraintTop_toTopOf="@id/progress_static_user" />
+
+                        <ImageView
+                            android:id="@+id/container_lvl_user"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:src="@drawable/ic_sun"
+                            app:layout_constraintBottom_toBottomOf="@id/progress_static_user"
+                            app:layout_constraintEnd_toStartOf="@id/progress_static_user"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/progress_static_user" />
+
+                        <TextView
+                            android:id="@+id/tv_count_lvl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textColor="@color/baff"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/container_lvl_user"
+                            app:layout_constraintEnd_toEndOf="@id/container_lvl_user"
+                            app:layout_constraintStart_toStartOf="@id/container_lvl_user"
+                            app:layout_constraintTop_toTopOf="@id/container_lvl_user" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="@string/statistic"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_static"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/img_course_lvl"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_level"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_static_lvl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="1"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/img_course_lvl"
+                            app:layout_constraintStart_toEndOf="@id/img_course_lvl"
+                            app:layout_constraintTop_toTopOf="@id/img_course_lvl" />
+
+                        <TextView
+                            android:id="@+id/title_static_lvl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Уровни занятий"
+                            android:textColor="@color/grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="@id/tv_static_lvl"
+                            app:layout_constraintTop_toBottomOf="@id/tv_static_lvl" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_static"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/img_experience"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_lightning"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_count_experience"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="250"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/img_experience"
+                            app:layout_constraintStart_toEndOf="@id/img_experience"
+                            app:layout_constraintTop_toTopOf="@id/img_experience" />
+
+                        <TextView
+                            android:id="@+id/title_count_experience"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Очки опыта"
+                            android:textColor="@color/grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="@id/tv_count_experience"
+                            app:layout_constraintTop_toBottomOf="@id/tv_count_experience" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_static"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/img_course"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_course"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="DuplicateIds" />
+
+                        <TextView
+                            android:id="@+id/tv_name_course"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Курс 1: Основы Языка Java"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/img_course"
+                            app:layout_constraintStart_toEndOf="@id/img_course"
+                            app:layout_constraintTop_toTopOf="@id/img_course"
+                            tools:ignore="DuplicateIds" />
+
+                        <TextView
+                            android:id="@+id/title_static_course"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Текущий уровень"
+                            android:textColor="@color/grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="@id/tv_name_course"
+                            app:layout_constraintTop_toBottomOf="@id/tv_name_course" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="Достижение"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/bg_static"
+                    android:paddingVertical="10dp">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_cup" />
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_medal" />
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_king" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

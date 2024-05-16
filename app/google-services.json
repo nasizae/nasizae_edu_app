@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "851044053514",
+    "project_id": "edupulse-96368",
+    "storage_bucket": "edupulse-96368.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851044053514:android:d94e3f76de77660b31a5f3",
+        "android_client_info": {
+          "package_name": "com.example.nasizae_edu_pulse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFRP5wmIhecbScB3Mz69b840jFwV7Fot4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
