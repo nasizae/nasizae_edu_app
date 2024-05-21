@@ -3,12 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.edupulse.presentation.ui.home.HomeFragment"
-        tools:layout="@layout/fragment_home" />
+    app:startDestination="@id/homefragment">
 
     <fragment
         android:id="@+id/navigation_personal_library"
@@ -57,7 +52,8 @@
         android:id="@+id/tasksFragment"
         android:name="com.example.edupulse.presentation.ui.home.tasks.TasksFragment"
         android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" />
+        tools:layout="@layout/fragment_tasks" >
+    </fragment>
     <fragment
         android:id="@+id/chaptersFragment"
         android:name="com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.ChaptersFragment"
@@ -68,4 +64,46 @@
         android:name="com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.individual.IndividualTasksFragment"
         android:label="fragment_individual_tasks"
         tools:layout="@layout/fragment_individual_tasks" />
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.tasks.tasksgame.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_gameFragment_to_resultScreenFragment"
+            app:destination="@id/resultScreenFragment" />
+        <action
+            android:id="@+id/action_gameFragment_to_tasksFragment"
+            app:destination="@id/tasksFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/awardsFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.tasks.awards.AwardsFragment"
+        android:label="fragment_awards"
+        tools:layout="@layout/fragment_awards" />
+    <fragment
+        android:id="@+id/resultScreenFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.tasks.tasksgame.resultScreen.ResultScreenFragment"
+        android:label="fragment_result_screen"
+        tools:layout="@layout/fragment_result_screen" >
+        <argument android:name="time"
+        app:argType="string"/>
+        <argument android:name="experience"
+            app:argType="integer"/>
+        <argument android:name="countRightAnswers"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_resultScreenFragment_to_homefragment"
+            app:destination="@id/homefragment" />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/homefragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.HomeFragment"
+        android:label="fragment_home1"
+        tools:layout="@layout/fragment_home1" >
+        <argument android:name="completed"
+            app:argType="string"/>
+    </fragment>
 </navigation>

@@ -18,7 +18,7 @@ class StaticFragment : Fragment(), GetUserDataUseCase.CallBack, GetUserStaticUse
     private lateinit var binding: FragmentStaticBinding
     private var getUserDataUseCase = GetUserDataUseCase()
     private var getUserStaticUseCase = GetUserStaticUseCase()
-    private var saveDataUserStaticUseCase = SaveDataUserStaticUseCase()
+    var userLvl=1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,20 +29,10 @@ class StaticFragment : Fragment(), GetUserDataUseCase.CallBack, GetUserStaticUse
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initSaveDataStatic()
         initProfileUser()
         initDataStatic()
     }
 
-    private fun initSaveDataStatic() {
-        saveDataUserStaticUseCase.save(
-            binding.tvCountLvl.text.toString().toInt(),
-            binding.tvProgressText.text.toString().toInt(),
-            binding.tvStaticLvl.text.toString().toInt(),
-            binding.tvCountExperience.text.toString().toInt(),
-            binding.tvNameCourse.text.toString()
-        )
-    }
 
     private fun initDataStatic() {
         getUserStaticUseCase.getUserStatic(this)
@@ -63,11 +53,17 @@ class StaticFragment : Fragment(), GetUserDataUseCase.CallBack, GetUserStaticUse
     }
 
     override fun getData(userStatic: UserStaticModel) {
-        binding.tvNameCourse.text = userStatic.nameThemeWork
-        binding.tvCountLvl.text = userStatic.userLvl.toString()
-        binding.tvProgressText.text = userStatic.progressNumber.toString()
-        binding.tvStaticLvl.text = userStatic.maxUserLvl.toString()
+        var progress=userStatic.progressNumber
+        binding.tvProgressText.text = progress.toString()+"/300"
         binding.tvCountExperience.text = userStatic.maxCountProgress.toString()
+        binding.progressStaticUser.progress= progress!!
+        if(progress>=300){
+            progress=0
+            userLvl+=1
+            binding.tvCountLvl.text=userLvl.toString()
+            binding.progressStaticUser.progress=progress
+            binding.tvProgressText.text = progress.toString()+"/300"
+        }
     }
 
     override fun error(error: String) {

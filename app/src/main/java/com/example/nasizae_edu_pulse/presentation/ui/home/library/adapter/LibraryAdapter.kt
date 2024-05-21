@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.nasizae_edu_pulse.databinding.ItemLibraryBinding
 
-class LibraryAdapter : Adapter<LibraryAdapter.LibraryHolder>() {
+class LibraryAdapter(private val list:List<String>,private val onItemClick:(position:Int)->Unit,private val onItemLongClick:(position:Int,libraryName:String)->Boolean) : Adapter<LibraryAdapter.LibraryHolder>() {
 
-    private val list =
-        mutableListOf("Изучение Андроид разработки", "Язык програмирование Java", "JetPack compose")
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LibraryHolder {
         return LibraryHolder(
@@ -29,7 +28,13 @@ class LibraryAdapter : Adapter<LibraryAdapter.LibraryHolder>() {
 
     inner class LibraryHolder(private val binding: ItemLibraryBinding) : ViewHolder(binding.root) {
         fun bind(item: String) {
-            binding.tvNameLibrary.text = item
+            binding.tvLibraryName.text = item
+            itemView.setOnClickListener {
+                onItemClick(adapterPosition)
+            }
+            itemView.setOnLongClickListener {
+                onItemLongClick(adapterPosition,item)
+            }
         }
     }
 }

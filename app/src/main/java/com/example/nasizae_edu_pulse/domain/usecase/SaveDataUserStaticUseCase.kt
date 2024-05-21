@@ -13,11 +13,11 @@ class SaveDataUserStaticUseCase {
     private val myDatabase = Firebase.database.getReference(USER)
 
     fun save(
-        userLvl: Int,
+        userLvl: Int?=null,
         progressNumber: Int? = null,
-        maxUserLvl: Int,
-        maxCountProgress: Int,
-        nameThemeWork: String,
+        maxUserLvl: Int?=null,
+        maxCountProgress: Int?=null,
+        nameThemeWork: String?=null,
     ) {
         val user: FirebaseUser? = auth.currentUser
         val uid: String? = user?.uid
@@ -25,7 +25,7 @@ class SaveDataUserStaticUseCase {
             val userStatic = UserStaticModel(
                 userLvl = userLvl,
                 progressNumber = progressNumber,
-                maxUserLvl = maxUserLvl,
+                countUserLvl = maxUserLvl,
                 maxCountProgress = maxCountProgress,
                 nameThemeWork = nameThemeWork
             )

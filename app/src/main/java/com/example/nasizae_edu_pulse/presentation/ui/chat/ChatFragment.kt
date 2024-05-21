@@ -20,9 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import java.time.LocalDate
 import java.util.Calendar
-import java.util.Date
 
 class ChatFragment : Fragment() {
 
@@ -47,7 +45,10 @@ class ChatFragment : Fragment() {
         initdata()
         adapter = MessageAdapter(list)
         binding.rvMessage.adapter = adapter
+
     }
+
+
     private fun initdata() {
         val user: FirebaseUser? = auth.currentUser
         binding.btnSend.setOnClickListener {
@@ -90,8 +91,8 @@ class ChatFragment : Fragment() {
                     val message = binding.etMessage.text.toString()
                     val date =
                         "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
-                    val imageUser=value?.image.toString()
-                    val userMessageModel = UserMessageModel(userName, message, date,imageUser)
+                    val imageUser = value?.image.toString()
+                    val userMessageModel = UserMessageModel(userName, message, date, imageUser)
                     myRef.push().setValue(userMessageModel)
                 }
 

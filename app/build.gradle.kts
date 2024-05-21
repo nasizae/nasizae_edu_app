@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.gms.google-services")
+    id ("androidx.navigation.safeargs")
+
 }
 
 android {

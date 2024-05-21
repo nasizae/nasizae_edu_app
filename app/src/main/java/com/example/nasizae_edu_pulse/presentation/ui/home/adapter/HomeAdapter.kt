@@ -10,24 +10,21 @@ import com.example.edupulse.presentation.ui.home.tasks.TasksFragment
 
 class HomeAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
-        private var fragmentArgs:Bundle?=null
+    private var fragmentArgs: Bundle? = null
 
-    fun setArguments(args:Bundle){
-        fragmentArgs=args
+    fun setArguments(args: Bundle) {
+        fragmentArgs = args
     }
 
-    override fun getItemCount()=2
+    override fun getItemCount() = 2
 
     override fun createFragment(position: Int): Fragment {
-        return when(position){
-            0->{val fragment= TasksFragment()
-                fragment.arguments=fragmentArgs
-                fragment}
-            1->{val fragment= LibraryFragment()
-                fragment.arguments=fragmentArgs
-                fragment
-            }
+        val fragment = when (position) {
+            0 -> TasksFragment()
+            1 -> LibraryFragment()
             else -> TasksFragment()
         }
+        fragment.arguments=fragmentArgs
+        return fragment
     }
 }

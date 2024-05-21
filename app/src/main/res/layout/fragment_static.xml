@@ -95,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="60dp"
                             android:layout_marginVertical="40dp"
-                            android:max="800"
+                            android:max="300"
                             android:progress="0"
                             android:progressDrawable="@drawable/progress_bar_style"
                             app:layout_constraintBottom_toBottomOf="parent"

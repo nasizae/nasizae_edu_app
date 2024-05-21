@@ -25,7 +25,7 @@ class RegistrationUseCase(private val context:Context, private val navController
                     val uid: String? = user?.uid
                     if (uid != null) {
                         setDataUser(uid, fullName, email, password)
-                        navController.navigate(R.id.navigation_home)
+                        navController.navigate(R.id.homefragment)
                     } else {
                         Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
                     }

@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/course"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
@@ -27,7 +28,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
             <TextView
-                android:id="@+id/tv_title_tasks"
+                android:id="@+id/tv_chapter_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
