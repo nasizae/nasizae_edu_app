@@ -83,7 +83,8 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/background_et"
             android:hint="@string/password"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_password"
@@ -101,10 +102,10 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/baff"
-            android:elevation="16dp"
             android:paddingVertical="16dp"
             android:text="@string/register"
             android:textAllCaps="false"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:cornerRadius="16dp" />

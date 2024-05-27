@@ -53,7 +53,6 @@ class ResultScreenFragment : Fragment() {
         if(uid!=null){
             if(progress>=300) {
                 progress=0
-
             }
             val userStatic = UserStaticModel(
                 maxCountProgress = maxExperience,
@@ -66,7 +65,7 @@ class ResultScreenFragment : Fragment() {
     private fun initListeners() {
         binding.btnNext.setOnClickListener {
             val completed="completed"
-            findNavController().navigate(R.id.homefragment, bundleOf("key" to completed))
+            findNavController().navigate(R.id.homeScreenFragment, bundleOf("key" to completed))
         }
     }
 }

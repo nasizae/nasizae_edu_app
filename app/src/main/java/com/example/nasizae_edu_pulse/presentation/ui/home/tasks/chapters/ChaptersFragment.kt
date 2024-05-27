@@ -28,6 +28,19 @@ class ChaptersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initGetDataChapters()
+        initListeners()
+
+
+    }
+
+    private fun initListeners() {
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.homeScreenFragment)
+        }
+    }
+
+    private fun initGetDataChapters() {
         val dataChapters = data.collection("chapters").document("chpater").get()
         dataChapters.addOnSuccessListener {
             if (it != null && it.exists()) {
@@ -44,8 +57,6 @@ class ChaptersFragment : Fragment() {
         }.addOnFailureListener {
             Log.d("ololo", "Error getting document: ", it)
         }
-
-
     }
 
     private fun onIndividualCLick() {

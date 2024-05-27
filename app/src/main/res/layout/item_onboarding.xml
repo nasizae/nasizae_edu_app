@@ -47,6 +47,7 @@
         android:layout_marginHorizontal="20dp"
         android:paddingVertical="16dp"
         app:cornerRadius="16dp"
+        android:gravity="center"
         android:layout_marginTop="60dp"/>
 
 </LinearLayout>

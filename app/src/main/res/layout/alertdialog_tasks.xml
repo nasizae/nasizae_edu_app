@@ -54,6 +54,7 @@
                 android:text="@string/next"
                 android:textAllCaps="false"
                 android:textSize="16sp"
+                android:gravity="center"
                 android:backgroundTint="@color/orange"
                 android:layout_marginHorizontal="40dp"
                 app:cornerRadius="16dp"

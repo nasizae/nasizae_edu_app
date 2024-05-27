@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_static"
         android:title="" />
     <item
-        android:id="@+id/homefragment"
+        android:id="@+id/homeScreenFragment"
         android:icon="@drawable/ic_home"
         android:title="" />
     <item

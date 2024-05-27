@@ -27,11 +27,14 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
+        if(!pref.isOnBoardingShow()){
+            navController.navigate(R.id.onBoardingFragment)
+        }
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.,
+                R.id.homeScreenFragment,
                 R.id.navigation_personal_library,
                 R.id.navigation_sittings,
                 R.id.navigation_static,

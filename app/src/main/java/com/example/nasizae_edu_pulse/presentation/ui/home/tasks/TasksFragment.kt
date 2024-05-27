@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.edupulse.data.model.Users
+import com.example.edupulse.data.pref.Pref
 import com.example.edupulse.domain.usecase.GetUserDataUseCase
 import com.example.edupulse.presentation.ui.home.tasks.adapter.TasksAdapter
 import com.example.nasizae_edu_pulse.R
@@ -25,6 +26,10 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     private lateinit var list: ArrayList<TasksItemModel>
     private lateinit var alertDialog: AlertDialog
     private val getUserDataUseCase = GetUserDataUseCase()
+    private val pref:Pref by lazy {
+        Pref(requireContext())
+    }
+    var position:Int=0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +45,18 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
         initAdapter()
         initGetUser()
         initListeners()
+        initNextUnClocked()
+    }
+
+    private fun initNextUnClocked() {
+        val data = arguments?.getString("key")
+        Log.e("ololo", "OnClickData: $data", )
+        if (data.equals("completed")) {
+            if (position < list.size - 1 && !list[position + 1].unClocked) {
+                list[position + 1] = list[position + 1].copy(unClocked = true)
+                adapter.notifyItemChanged(position + 1)
+            }
+        }
     }
 
     private fun initListeners() {
@@ -56,6 +73,7 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     }
 
     private fun initAlertDialog() {
+        pref.onOnBoardingShowed()
         val alertDialogBuilder =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogStyle)
         val alertBinding = AlertdialogTasksBinding.inflate(layoutInflater)
@@ -71,14 +89,7 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
         val bundle =
             bundleOf("position" to possition, "count" to countExperience, "health" to health)
         findNavController().navigate(R.id.gameFragment, bundle)
-        val data = arguments?.getString("completed")
-        Log.e("ololo", "OnClick: $data", )
-        if (data.equals("completed")) {
-            if (possition < list.size - 1 && !list[possition + 1].unClocked) {
-                list[possition + 1] = list[possition + 1].copy(unClocked = true)
-                adapter.notifyItemChanged(possition + 1)
-            }
-        }
+        position=possition
     }
 
     private fun initLoad() {
@@ -98,7 +109,9 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
 
     private fun initAdapter() {
         adapter = TasksAdapter(list, this::OnClick)
-        alertDialog.show()
+        if(!pref.isOnBoardingShow()) {
+            alertDialog.show()
+        }
         binding.rvTasks.adapter = adapter
     }
 

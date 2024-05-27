@@ -15,7 +15,7 @@ class LoginUseCase(private val context: Context,private val navController: NavCo
         ) {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    navController.navigate(R.id.homefragment)
+                    navController.navigate(R.id.homeScreenFragment)
                 }
                 else{
                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()

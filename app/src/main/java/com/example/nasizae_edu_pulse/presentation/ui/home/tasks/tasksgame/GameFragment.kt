@@ -183,7 +183,7 @@ class GameFragment : Fragment() {
             health--
             binding.tvCountHealth.text = health.toString()
             if (health == 0) {
-                findNavController().navigate(R.id.homefragment)
+                findNavController().navigate(R.id.homeScreenFragment)
             }
         }
         dialogBinding.btnNext.setOnClickListener {

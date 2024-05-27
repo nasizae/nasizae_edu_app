@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/homefragment">
+    app:startDestination="@id/authenticationFragment">
 
     <fragment
         android:id="@+id/navigation_personal_library"
@@ -92,18 +92,10 @@
             app:argType="integer"/>
         <argument android:name="countRightAnswers"
             app:argType="integer"/>
-        <action
-            android:id="@+id/action_resultScreenFragment_to_homefragment"
-            app:destination="@id/homefragment" />
-
-
     </fragment>
     <fragment
-        android:id="@+id/homefragment"
-        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.HomeFragment"
-        android:label="fragment_home1"
-        tools:layout="@layout/fragment_home1" >
-        <argument android:name="completed"
-            app:argType="string"/>
-    </fragment>
+        android:id="@+id/homeScreenFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.home.HomeScreenFragment"
+        android:label="fragment_home_screen"
+        tools:layout="@layout/fragment_home_screen" />
 </navigation>
