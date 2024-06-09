@@ -8,8 +8,10 @@ import com.example.nasizae_edu_pulse.R
 import com.example.nasizae_edu_pulse.databinding.ItemTasksHomeBinding
 import com.example.nasizae_edu_pulse.domain.model.TasksItemModel
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 class TasksAdapter(private val list: ArrayList<TasksItemModel>,private val onItemClick:(possition:Int,experieceCount:Int)->Unit) : Adapter<TasksAdapter.TasksHolder>() {
+    private val random=Random
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksHolder {
         return TasksHolder(
             ItemTasksHomeBinding.inflate(
@@ -28,7 +30,7 @@ class TasksAdapter(private val list: ArrayList<TasksItemModel>,private val onIte
 
     inner class TasksHolder(private val binding: ItemTasksHomeBinding) : ViewHolder(binding.root) {
         fun bind(item: TasksItemModel) {
-            val countExperience= 25
+            val countExperience= random.nextInt(15,25)
             binding.btnTasks.text=item.id.toString()
             binding.btnTasks.setOnClickListener {
              onItemClick(adapterPosition,countExperience)

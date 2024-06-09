@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity() {
             R.id.onBoardingFragment,
             R.id.authenticationFragment,
             R.id.registrationFragment,
+            R.id.resetPasswordFragment,
+            R.id.forgotPasswordFragment,
+//            R.id.gameFragment,
+//            R.id.resultScreenFragment
         )
         supportActionBar?.hide()
         setupActionBarWithNavController(navController, appBarConfiguration)

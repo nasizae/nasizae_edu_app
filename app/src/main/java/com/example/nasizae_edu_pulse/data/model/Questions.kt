@@ -10,3 +10,4 @@ data class Question(
 data class Quiz(
     val questions: List<Question> = emptyList()
 )
+

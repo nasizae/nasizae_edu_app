@@ -13,19 +13,19 @@ class OnBoardingAdapter(private val onItemClick: () -> Unit) :
 
     private val list = mutableListOf(
         OnBoardingModel(
-            "Планируй свое обучение с удовольствием!",
-            "Создавай учебные планы, следи за прогрессом и достигай своих целей с легкостью благодаря нашему удобному приложению.",
-            "plan_training.json"
+            "Добро пожаловать!",
+            "Мы рады приветствовать вас в нашем приложении, которое откроет для вас мир Android-разработки! Наши курсы и упражнения помогут вам легко и быстро освоить программирование на Java и другие важные аспекты разработки. Готовы начать? Погружаемся в мир технологий вместе!",
+            "welcome.json"
         ),
         OnBoardingModel(
-            "Будь в курсе всех заданий и дедлайнов!",
-            "Получай уведомления о предстоящих заданиях и дедлайнах, чтобы никогда не пропустить важные сроки и успешно завершить свои учебные проекты.",
-            "work_and_dedline.json"
+            "Изучение Андроид разработки!",
+            "Здесь вы найдёте всё, что нужно для освоения Android-разработки: от изучения языка программирования до создания полноценных приложений.",
+            "read_book.json"
         ),
         OnBoardingModel(
-            "Получай персонализированные рекомендации для эффективного обучения!",
-            "Наши алгоритмы анализируют твои успехи и предпочтения, чтобы предложить персонализированные рекомендации по курсам, материалам и методам обучения, которые подойдут именно тебе.",
-            "personal_recommended.json"
+            "Game Interface",
+            "Чтобы сделать обучение более интересным, мы создали приложение в игровом стиле, где вы сможете проходить уровни, осваивая новые знания, достигать поставленных целей и повышать свой уровень.",
+            "game.json"
         ),
 
         )
@@ -39,11 +39,13 @@ class OnBoardingAdapter(private val onItemClick: () -> Unit) :
             )
         )
     }
+
     override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: OnboardingHolder, position: Int) {
         holder.bind(list[position])
     }
+
     inner class OnboardingHolder(private val binding: ItemOnboardingBinding) :
         ViewHolder(binding.root) {
         fun bind(onBoardingModel: OnBoardingModel) {
@@ -52,7 +54,7 @@ class OnBoardingAdapter(private val onItemClick: () -> Unit) :
             binding.lottieView.setAnimation(onBoardingModel.lottie)
             binding.lottieView.playAnimation()
             binding.lottieView.repeatCount = -1
-            binding.btnNext.isVisible=adapterPosition==list.lastIndex
+            binding.btnNext.isVisible = adapterPosition == list.lastIndex
             binding.btnNext.setOnClickListener {
                 onItemClick()
             }

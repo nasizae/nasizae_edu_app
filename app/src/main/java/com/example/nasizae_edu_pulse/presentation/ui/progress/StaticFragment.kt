@@ -10,9 +10,9 @@ import com.bumptech.glide.Glide
 import com.example.edupulse.data.model.Users
 import com.example.edupulse.domain.usecase.GetUserDataUseCase
 import com.example.nasizae_edu_pulse.databinding.FragmentStaticBinding
-import com.example.nasizae_edu_pulse.domain.model.UserStaticModel
+import com.example.nasizae_edu_pulse.domain.model.UserDataStaticResult
+import com.example.nasizae_edu_pulse.domain.model.UserDataStaticTasks
 import com.example.nasizae_edu_pulse.domain.usecase.GetUserStaticUseCase
-import com.example.nasizae_edu_pulse.domain.usecase.SaveDataUserStaticUseCase
 
 class StaticFragment : Fragment(), GetUserDataUseCase.CallBack, GetUserStaticUseCase.Call {
     private lateinit var binding: FragmentStaticBinding
@@ -31,6 +31,7 @@ class StaticFragment : Fragment(), GetUserDataUseCase.CallBack, GetUserStaticUse
         super.onViewCreated(view, savedInstanceState)
         initProfileUser()
         initDataStatic()
+        binding.tvCountLvl.text = userLvl.toString()
     }
 
 
@@ -52,17 +53,22 @@ class StaticFragment : Fragment(), GetUserDataUseCase.CallBack, GetUserStaticUse
         Toast.makeText(requireContext(), "ошибка сети", Toast.LENGTH_SHORT).show()
     }
 
-    override fun getData(userStatic: UserStaticModel) {
-        var progress=userStatic.progressNumber
+    override fun getDataStaticTasks(userStaticTasks: UserDataStaticTasks) {
+        binding.tvNameCourse.text=userStaticTasks.nameThemeWork
+        binding.tvStaticLvl.text=userStaticTasks.countUserLvl.toString()
+
+    }
+
+    override fun getDataStaticResult(userStaticResult: UserDataStaticResult) {
+        var progress=userStaticResult.progressNumber
         binding.tvProgressText.text = progress.toString()+"/300"
-        binding.tvCountExperience.text = userStatic.maxCountProgress.toString()
-        binding.progressStaticUser.progress= progress!!
-        if(progress>=300){
-            progress=0
-            userLvl+=1
-            binding.tvCountLvl.text=userLvl.toString()
-            binding.progressStaticUser.progress=progress
-            binding.tvProgressText.text = progress.toString()+"/300"
+        binding.tvCountExperience.text = userStaticResult.progressNumber.toString()
+        binding.progressStaticUser.progress = progress
+        if (progress >= 300) {
+            progress = 0
+            userLvl += 1
+            binding.progressStaticUser.progress = progress
+            binding.tvProgressText.text = progress.toString() + "/300"
         }
     }
 

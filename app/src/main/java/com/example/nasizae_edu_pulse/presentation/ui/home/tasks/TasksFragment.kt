@@ -1,6 +1,7 @@
 package com.example.edupulse.presentation.ui.home.tasks
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,22 +15,43 @@ import com.bumptech.glide.Glide
 import com.example.edupulse.data.model.Users
 import com.example.edupulse.data.pref.Pref
 import com.example.edupulse.domain.usecase.GetUserDataUseCase
+import com.example.edupulse.domain.usecase.RegistrationUseCase.Companion.USER
 import com.example.edupulse.presentation.ui.home.tasks.adapter.TasksAdapter
 import com.example.nasizae_edu_pulse.R
+import com.example.nasizae_edu_pulse.databinding.AlertDialogStartGameBinding
 import com.example.nasizae_edu_pulse.databinding.AlertdialogTasksBinding
 import com.example.nasizae_edu_pulse.databinding.FragmentTasksBinding
 import com.example.nasizae_edu_pulse.domain.model.TasksItemModel
+import com.example.nasizae_edu_pulse.domain.model.UserDataStaticTasks
+import com.example.nasizae_edu_pulse.domain.model.UserStaticModel
+import com.example.nasizae_edu_pulse.domain.repository.RepositoryImpl
+import com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.ChaptersFragment.Companion.CHAPTER_COLLECTION
+import com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.ChaptersFragment.Companion.CHAPTER_COURSE
+import com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.ChaptersFragment.Companion.CHAPTER_DOCUMENT
+import com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.ChaptersFragment.Companion.CHAPTER_NAME
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     private lateinit var binding: FragmentTasksBinding
     private lateinit var adapter: TasksAdapter
     private lateinit var list: ArrayList<TasksItemModel>
     private lateinit var alertDialog: AlertDialog
-    private val getUserDataUseCase = GetUserDataUseCase()
-    private val pref:Pref by lazy {
+    private var firestoreDb = FirebaseFirestore.getInstance()
+    private val myDataBase = Firebase.database.getReference(USER)
+    private val auth = FirebaseAuth.getInstance()
+    private val repositoryImpl = RepositoryImpl()
+    private val tasksViewModel = TasksViewModel(repositoryImpl)
+    var userLvl = 1
+    private val pref: Pref by lazy {
         Pref(requireContext())
     }
-    var position:Int=0
+    var position: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,12 +68,77 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
         initGetUser()
         initListeners()
         initNextUnClocked()
+        initGetCourseChapter()
+        initGetHealth()
+    }
+
+    private fun initGetHealth() {
+        val auth = FirebaseAuth.getInstance()
+        val uid = auth.currentUser?.uid.toString()
+        myDataBase.child(uid).child("static").child("userHealth")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val value = snapshot.getValue(UserStaticModel::class.java)
+                    if (value?.health != null) {
+                        binding.tvCountHealth.text = value.health.toString()
+                        if (value.health < 5) {
+                            startTimerHealth(uid, value.health)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+    }
+
+    private fun startTimerHealth(uid: String, health: Int) {
+        val time: Long = 10000L
+        object : CountDownTimer(time, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minutes = (millisUntilFinished / 1000) / 60
+                val seconds = (millisUntilFinished / 1000) % 60
+                if (health == 0) {
+                    binding.tvCountHealth.visibility=View.GONE
+                    binding.tvTimer.visibility=View.VISIBLE
+                    binding.tvTimer.text = String.format("%02d:%02d", minutes, seconds)
+                }
+                else{
+                    binding.tvCountHealth.visibility=View.VISIBLE
+                    binding.tvTimer.visibility=View.GONE
+                }
+            }
+
+            override fun onFinish() {
+                val newHealth = health + 1
+                val userStaticModel = UserStaticModel(health = newHealth)
+                myDataBase.child(uid).child("static").child("userHealth").setValue(userStaticModel)
+            }
+        }.start()
+    }
+
+    private fun initGetCourseChapter() {
+        firestoreDb.collection(CHAPTER_COLLECTION).document(CHAPTER_DOCUMENT).get()
+            .addOnSuccessListener {
+                val chapterName = it.get(CHAPTER_NAME) as? List<String>
+                val chapterCourse = it.get(CHAPTER_COURSE) as? List<String>
+                binding.tvChapterTasks.text = chapterName?.get(0).toString()
+                binding.course.text = chapterCourse?.get(0).toString()
+                val uid = auth.currentUser?.uid.toString()
+                val userStaticModel = UserDataStaticTasks(
+                    countUserLvl = userLvl,
+                    nameThemeWork = "${binding.course.text} ${binding.tvChapterTasks.text}"
+                )
+                myDataBase.child(uid).child("static").child("static_in_tasks")
+                    .setValue(userStaticModel)
+            }
     }
 
     private fun initNextUnClocked() {
         val data = arguments?.getString("key")
-        Log.e("ololo", "OnClickData: $data", )
+        Log.e("ololo", "OnClickData: $data")
         if (data.equals("completed")) {
+            userLvl++
             if (position < list.size - 1 && !list[position + 1].unClocked) {
                 list[position + 1] = list[position + 1].copy(unClocked = true)
                 adapter.notifyItemChanged(position + 1)
@@ -69,27 +156,55 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     }
 
     private fun initGetUser() {
-        getUserDataUseCase.getUser(this)
+//        getUserDataUseCase.getUser(this)
+        tasksViewModel.users.observe(viewLifecycleOwner) { users ->
+            binding.tvUsername.text = users.fullName
+            Glide.with(binding.imgUser).load(users.image).into(binding.imgUser)
+        }
+        tasksViewModel.loading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.loading.root.visibility = View.VISIBLE
+            } else {
+                binding.loading.root.visibility = View.GONE
+            }
+        }
+
     }
 
     private fun initAlertDialog() {
-        pref.onOnBoardingShowed()
         val alertDialogBuilder =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogStyle)
         val alertBinding = AlertdialogTasksBinding.inflate(layoutInflater)
         alertDialogBuilder.setView(alertBinding.root)
         alertBinding.btnNext.setOnClickListener {
             alertDialog.dismiss()
+            pref.alertDialogShow()
         }
         alertDialog = alertDialogBuilder.create()
     }
 
     private fun OnClick(possition: Int, countExperience: Int) {
-        val health = binding.tvCountHealth.text.toString()
         val bundle =
-            bundleOf("position" to possition, "count" to countExperience, "health" to health)
+            bundleOf("position" to possition, "count" to countExperience)
         findNavController().navigate(R.id.gameFragment, bundle)
-        position=possition
+//        alertDialogStart(possition,countExperience)
+//        alertDialog.show()
+        position = possition
+    }
+
+    private fun alertDialogStart(possition: Int, countExperience: Int) {
+        val alertDialogBuilder=AlertDialog.Builder(requireContext(),R.style.CustomAlertDialogStyle)
+        val alertDialogBinding=AlertDialogStartGameBinding.inflate(layoutInflater)
+        alertDialogBuilder.setView(alertDialogBinding.root)
+        alertDialogBinding.btnStart.setOnClickListener {
+            val bundle =
+                bundleOf("position" to possition, "count" to countExperience)
+            findNavController().navigate(R.id.gameFragment, bundle)
+            alertDialog.dismiss()
+        }
+        alertDialogBinding.numberTasks.text=(possition+1).toString()
+        alertDialogBinding.numberExp.text=countExperience.toString()
+        alertDialog=alertDialogBuilder.create()
     }
 
     private fun initLoad() {
@@ -109,7 +224,7 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
 
     private fun initAdapter() {
         adapter = TasksAdapter(list, this::OnClick)
-        if(!pref.isOnBoardingShow()) {
+        if (!pref.alertDialogShowed()) {
             alertDialog.show()
         }
         binding.rvTasks.adapter = adapter
@@ -123,5 +238,6 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     override fun onError(error: String) {
         Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
     }
+
 
 }

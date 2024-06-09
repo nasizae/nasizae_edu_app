@@ -25,12 +25,12 @@
         tools:layout="@layout/fragment_static" />
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.edupulse.presentation.ui.auth.RegistrationFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.auth.registration.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
     <fragment
         android:id="@+id/authenticationFragment"
-        android:name="com.example.edupulse.presentation.ui.auth.AuthenticationFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.auth.authentication.AuthenticationFragment"
         android:label="fragment_authentication"
         tools:layout="@layout/fragment_authentication" />
     <fragment
@@ -72,9 +72,6 @@
         <action
             android:id="@+id/action_gameFragment_to_resultScreenFragment"
             app:destination="@id/resultScreenFragment" />
-        <action
-            android:id="@+id/action_gameFragment_to_tasksFragment"
-            app:destination="@id/tasksFragment" />
     </fragment>
     <fragment
         android:id="@+id/awardsFragment"
@@ -98,4 +95,14 @@
         android:name="com.example.nasizae_edu_pulse.presentation.ui.home.HomeScreenFragment"
         android:label="fragment_home_screen"
         tools:layout="@layout/fragment_home_screen" />
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.auth.authentication.forgot_password.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" />
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.auth.authentication.forgot_password.reset_password.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" />
 </navigation>

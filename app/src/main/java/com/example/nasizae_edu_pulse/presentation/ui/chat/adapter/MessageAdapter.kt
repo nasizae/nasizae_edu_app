@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.edupulse.data.model.UserMessageModel
-import com.example.edupulse.data.model.Users
 import com.example.nasizae_edu_pulse.databinding.ItemMessageBinding
 
 class MessageAdapter(private val list:ArrayList<UserMessageModel>) : Adapter<MessageAdapter.MessageHolder>() {
@@ -38,6 +37,8 @@ class MessageAdapter(private val list:ArrayList<UserMessageModel>) : Adapter<Mes
             binding.tvMessage.text = userMessageModel.message
             binding.tvUsername.text = userMessageModel.username
             binding.tvDate.text=userMessageModel.date
+            binding.tvTime.text=userMessageModel.time
+
             Glide.with(binding.imgUser).load(userMessageModel.imageUser).into(binding.imgUser)
 
         }

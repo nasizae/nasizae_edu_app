@@ -15,17 +15,18 @@ class Pref(private val context: Context) {
         pref.edit().putBoolean(SHOWED_KEY, true).apply()
     }
 
-    fun unlockSecondLevel() {
-        pref.edit().putBoolean(NEXT_LEVEL_UNLOCKED_KEY, true).apply()
+    fun alertDialogShow(){
+        pref.edit().putBoolean(KEY_ALERT_SHOW,true).apply()
+    }
+    fun alertDialogShowed():Boolean{
+       return pref.getBoolean(KEY_ALERT_SHOW,false)
     }
 
-    fun isNextLevelUnlocked(): Boolean {
-        return pref.getBoolean(NEXT_LEVEL_UNLOCKED_KEY, false)
-    }
 
     companion object {
         const val SHOWED_KEY = "seen_key"
         const val SAVE_IMAGE = "save_image"
         const val NEXT_LEVEL_UNLOCKED_KEY = "second_level_unlocked_key"
+        const val KEY_ALERT_SHOW="alert_show"
     }
 }

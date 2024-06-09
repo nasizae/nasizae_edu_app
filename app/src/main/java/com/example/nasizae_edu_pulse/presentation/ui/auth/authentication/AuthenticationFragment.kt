@@ -1,4 +1,4 @@
-package com.example.edupulse.presentation.ui.auth
+package com.example.nasizae_edu_pulse.presentation.ui.auth.authentication
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 class AuthenticationFragment : Fragment() {
     private lateinit var binding: FragmentAuthenticationBinding
     private lateinit var loginUseCase: LoginUseCase
-    private val auth=FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,27 +27,35 @@ class AuthenticationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSignInUsers()
+        initListeners()
+    }
+
+    private fun initListeners() {
+        binding.btnTransitionRegistration.setOnClickListener {
+            findNavController().navigate(R.id.registrationFragment)
+        }
+        binding.btnForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.resetPasswordFragment)
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        if(auth.currentUser!=null){
+        if (auth.currentUser != null) {
             findNavController().navigate(R.id.homeScreenFragment)
-        }
-        else{
+        } else {
             Toast.makeText(requireContext(), "Сделайте вход", Toast.LENGTH_SHORT).show()
         }
 
     }
 
     private fun initSignInUsers() {
-        loginUseCase=LoginUseCase(requireContext(),findNavController())
-        binding.btnTransitionRegistration.setOnClickListener {
-            findNavController().navigate(R.id.registrationFragment)
-        }
+        loginUseCase = LoginUseCase(requireContext(), findNavController())
         binding.btnSignIn.setOnClickListener {
-            loginUseCase.login(binding.etEmail.text.toString(),
-                binding.etPassword.text.toString())
+            loginUseCase.login(
+                binding.etEmail.text.toString(),
+                binding.etPassword.text.toString()
+            )
         }
 
     }

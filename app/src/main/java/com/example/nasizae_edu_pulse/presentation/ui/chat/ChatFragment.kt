@@ -1,5 +1,6 @@
 package com.example.edupulse.presentation.ui.chat
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -21,6 +22,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class ChatFragment : Fragment() {
 
@@ -86,13 +89,16 @@ class ChatFragment : Fragment() {
             myDataBase.child(uid).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val value = snapshot.getValue(Users::class.java)
-                    val userName = value?.fullName.toString()
                     val calendar = Calendar.getInstance()
+                    val simpleTime = SimpleDateFormat("HH:mm", Locale.getDefault())
+                    val simpleDate = SimpleDateFormat("dd MMMM", Locale("ru"))
+                    val userName = value?.fullName.toString()
                     val message = binding.etMessage.text.toString()
-                    val date =
-                        "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
+                    val time = simpleTime.format(calendar.time)
                     val imageUser = value?.image.toString()
-                    val userMessageModel = UserMessageModel(userName, message, date, imageUser)
+                    val date = simpleDate.format(calendar.time)
+                    val userMessageModel =
+                        UserMessageModel(userName, message, time, imageUser, date)
                     myRef.push().setValue(userMessageModel)
                 }
 

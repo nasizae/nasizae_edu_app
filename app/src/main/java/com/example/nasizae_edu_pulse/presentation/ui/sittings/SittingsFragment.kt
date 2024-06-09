@@ -18,8 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class SittingsFragment : Fragment(),GetUserDataUseCase.CallBack{
 
-    private var _binding: FragmentSittingsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentSittingsBinding
     private lateinit var alertDialog: AlertDialog
     private val getUserDataUseCase=GetUserDataUseCase()
     private val auth=FirebaseAuth.getInstance()
@@ -30,7 +29,7 @@ class SittingsFragment : Fragment(),GetUserDataUseCase.CallBack{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSittingsBinding.inflate(inflater, container, false)
+        binding = FragmentSittingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
     }
@@ -69,12 +68,6 @@ class SittingsFragment : Fragment(),GetUserDataUseCase.CallBack{
         }
         alertDialog.show()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onUserReceived(users: Users) {
         binding.tvEmail.text=users.email
         binding.tvUsername.text=users.fullName

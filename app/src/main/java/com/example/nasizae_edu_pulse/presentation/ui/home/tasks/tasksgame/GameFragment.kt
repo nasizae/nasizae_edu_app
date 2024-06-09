@@ -9,13 +9,21 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.edupulse.domain.usecase.RegistrationUseCase.Companion.USER
 import com.example.nasizae_edu_pulse.R
 import com.example.nasizae_edu_pulse.data.model.Question
 import com.example.nasizae_edu_pulse.data.model.Quiz
 import com.example.nasizae_edu_pulse.databinding.BottomSheetDialogBinding
 import com.example.nasizae_edu_pulse.databinding.FragmentGameBinding
+import com.example.nasizae_edu_pulse.domain.model.UserStaticModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class GameFragment : Fragment() {
 
@@ -24,7 +32,7 @@ class GameFragment : Fragment() {
     private lateinit var buttonAnswer: List<Button>
     private var answer: String = ""
     private var position: Int = 0
-    private var health = 5
+    private var health: Int? = null
     private var countQuestion = 1
     private lateinit var question: Question
     private var questionStartTime: Long = 0L
@@ -32,6 +40,7 @@ class GameFragment : Fragment() {
     private var countRightAnswers = 0
     private var time: String = ""
     private var explanation: String = ""
+    private val myDataBase = Firebase.database.getReference(USER)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +54,25 @@ class GameFragment : Fragment() {
         initListeners()
         initGetData()
         questionStartTime = System.currentTimeMillis()
+        initGetHealthUser()
+    }
+
+    private fun initGetHealthUser() {
+        val auth = FirebaseAuth.getInstance()
+        val uid = auth.currentUser?.uid.toString()
+        myDataBase.child(uid).child("static").child("userHealth")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val value = snapshot.getValue(UserStaticModel::class.java)
+                    if (value != null) {
+                        binding.tvCountHealth.text = value.health.toString()
+                        health = value.health
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+
+            })
     }
 
     private fun stopQuizTimer() {
@@ -56,40 +84,37 @@ class GameFragment : Fragment() {
         time = "$minutes:$seconds"
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     private fun initGetData() {
         val countExperience = arguments?.getInt("count")
-        firestoreDb.collection("Questions").document("Question").get().addOnSuccessListener {
-            val data = it.toObject(Quiz::class.java)
-            if (data != null) {
-                if (position < data.questions.size) {
-                    question = data.questions[position]
-                    binding.btnAnswerFirst.text = question.answers.get(0)
-                    binding.btnAnswerSecond.text = question.answers.get(1)
-                    binding.btnAnswerThree.text = question.answers.get(2)
-                    binding.btnAnswerFour.text = question.answers.get(3)
-                    binding.tvQuestionTasks.text = question.questionText
-                    explanation = question.explanation.toString()
-                    answer = question.correctAnswer.toString()
-                }
-                else {
-                    val totalCountRightAnswers = (countRightAnswers * 100) / data.questions.size
-                    stopQuizTimer()
-                    if (countExperience != null) {
-                        findNavController().navigate(
-                            GameFragmentDirections.actionGameFragmentToResultScreenFragment(
-                                time,
-                                countExperience,
-                                totalCountRightAnswers
+        val quizPosition = arguments?.getInt("position")
+        firestoreDb.collection("Questions").document("question" + quizPosition).get()
+            .addOnSuccessListener {
+                val data = it.toObject(Quiz::class.java)
+                if (data != null) {
+                    if (position < data.questions.size) {
+                        question = data.questions[position]
+                        binding.btnAnswerFirst.text = question.answers.get(0)
+                        binding.btnAnswerSecond.text = question.answers.get(1)
+                        binding.btnAnswerThree.text = question.answers.get(2)
+                        binding.btnAnswerFour.text = question.answers.get(3)
+                        binding.tvQuestionTasks.text = question.questionText
+                        explanation = question.explanation.toString()
+                        answer = question.correctAnswer.toString()
+                    } else {
+                        val totalCountRightAnswers = (countRightAnswers * 100) / data.questions.size
+                        stopQuizTimer()
+                        if (countExperience != null) {
+                            findNavController().navigate(
+                                GameFragmentDirections.actionGameFragmentToResultScreenFragment(
+                                    time,
+                                    countExperience,
+                                    totalCountRightAnswers
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
-        }
     }
 
     private fun initListeners() {
@@ -102,11 +127,11 @@ class GameFragment : Fragment() {
 
         buttonAnswer.forEach { button ->
             button.setOnClickListener {
-                hight(button)
+                clickButton(button)
             }
         }
         binding.btnBack.setOnClickListener {
-                findNavController().navigateUp()
+            findNavController().navigateUp()
         }
         binding.btnCheck.setOnClickListener {
             checkAnswer()
@@ -180,10 +205,13 @@ class GameFragment : Fragment() {
                     R.drawable.bg_wrong_bottom_sheet
                 )
             )
-            health--
-            binding.tvCountHealth.text = health.toString()
+            health = health!! - 1
+            val auth = FirebaseAuth.getInstance()
+            val uid = auth.currentUser?.uid.toString()
+            val userStaticModel = UserStaticModel(health = health!!)
+            myDataBase.child(uid).child("static").child("userHealth").setValue(userStaticModel)
             if (health == 0) {
-                findNavController().navigate(R.id.homeScreenFragment)
+                onDestroy()
             }
         }
         dialogBinding.btnNext.setOnClickListener {
@@ -196,7 +224,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun hight(selectButton: Button) {
+    private fun clickButton(selectButton: Button) {
         buttonAnswer.forEach {
             it.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_answers))
         }
@@ -208,4 +236,8 @@ class GameFragment : Fragment() {
         )
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        findNavController().navigate(R.id.homeScreenFragment)
+    }
 }

@@ -25,4 +25,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="check">Проверить</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="txt_reset_password">Введите вашу почту для сброса пароля</string>
+    <string name="input_fullname">Введите ваше Фамилия Имя</string>
+    <string name="input_email">Введите вашу действующую почту</string>
+    <string name="input_password">Пароль должен быть не меньше 8 символов</string>
 </resources>

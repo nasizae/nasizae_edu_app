@@ -1,10 +1,14 @@
 package com.example.nasizae_edu_pulse.domain.model
 
 data class UserStaticModel(
-    val userLvl:Int?=null,
-    val progressNumber:Int?=null,
-    val countUserLvl:Int?=null,
-    val maxCountProgress:Int?=null,
+    val health:Int?=null,
+)
+data class UserDataStaticTasks(
     val nameThemeWork:String?=null,
+    val countUserLvl:Int?=null,
+)
+data class UserDataStaticResult(
+    val progressNumber:Int=0,
+    val maxCountProgress:Int=0,
 )
 

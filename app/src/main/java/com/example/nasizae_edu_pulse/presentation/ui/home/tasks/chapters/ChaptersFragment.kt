@@ -1,5 +1,6 @@
 package com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,15 +9,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.nasizae_edu_pulse.R
+import com.example.nasizae_edu_pulse.data.model.Chapter
 import com.example.nasizae_edu_pulse.data.model.ChapterModel
 import com.example.nasizae_edu_pulse.databinding.FragmentChaptersBinding
+import com.example.nasizae_edu_pulse.domain.repository.RepositoryImpl
 import com.example.nasizae_edu_pulse.presentation.ui.home.tasks.chapters.adapter.ChaptersAdapter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 
 class ChaptersFragment : Fragment() {
     private lateinit var binding: FragmentChaptersBinding
-    private lateinit var adapter: ChaptersAdapter
     private val data = FirebaseFirestore.getInstance()
+    private val repositoryImpl=RepositoryImpl()
+    private val chaptersViewModel=ChaptersViewModel(repositoryImpl)
+    private lateinit var adapter: ChaptersAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,25 +47,20 @@ class ChaptersFragment : Fragment() {
     }
 
     private fun initGetDataChapters() {
-        val dataChapters = data.collection("chapters").document("chpater").get()
-        dataChapters.addOnSuccessListener {
-            if (it != null && it.exists()) {
-                val chapter = it.toObject(ChapterModel::class.java)
-                if (chapter != null) {
-                    adapter = ChaptersAdapter(
-                        chapter.chaptersName ?: arrayListOf(),
-                        chapter.course ?: arrayListOf(),
-                        this::onIndividualCLick
-                    )
-                    binding.rvChapters.adapter = adapter
-                }
-            }
-        }.addOnFailureListener {
-            Log.d("ololo", "Error getting document: ", it)
+        chaptersViewModel.chapters.observe(viewLifecycleOwner){
+          adapter= ChaptersAdapter(it.chapter,this::onIndividualCLick)
+            binding.rvChapters.adapter=adapter
         }
     }
 
     private fun onIndividualCLick() {
         findNavController().navigate(R.id.individualTasksFragment)
+    }
+
+    companion object{
+        val CHAPTER_COLLECTION="chapters"
+        val CHAPTER_DOCUMENT="chpater"
+        val CHAPTER_NAME="chaptersName"
+        val CHAPTER_COURSE="course"
     }
 }

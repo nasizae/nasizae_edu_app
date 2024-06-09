@@ -12,7 +12,7 @@
         android:layout_height="300dp"
         android:layout_marginTop="60dp"
         android:scaleType="fitCenter"
-        app:lottie_fileName="plan_training.json"/>
+        app:lottie_fileName="welcome.json"/>
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"

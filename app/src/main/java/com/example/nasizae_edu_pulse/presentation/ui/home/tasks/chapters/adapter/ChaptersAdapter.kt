@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.nasizae_edu_pulse.data.model.Chapter
+import com.example.nasizae_edu_pulse.data.model.ChapterModel
 import com.example.nasizae_edu_pulse.databinding.ItemChaptersBinding
 
 class ChaptersAdapter(
-    private val listChaptersName: ArrayList<String>,
-    private val listCourse: ArrayList<String>,
+    private val list: List<ChapterModel>,
     private val onIndividualClick: () -> Unit
 ) :
     Adapter<ChaptersAdapter.ChaptersHolder>() {
@@ -23,18 +24,18 @@ class ChaptersAdapter(
         )
     }
 
-    override fun getItemCount() = listCourse.size
+    override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: ChaptersHolder, position: Int) {
-        holder.bind(listChaptersName[position], listCourse[position])
+        holder.bind(list[position])
     }
 
     inner class ChaptersHolder(val binding: ItemChaptersBinding) :
         ViewHolder(binding.root) {
-        fun bind(chaptersName: String, course: String) {
-            binding.tvChapterName.text = chaptersName
-            binding.course.text = course
-            binding.containerIndividual.isVisible = adapterPosition == listChaptersName.lastIndex
+        fun bind(chapter: ChapterModel) {
+                binding.tvChapterName.text = chapter.chapterName
+                binding.course.text = chapter.course
+            binding.containerIndividual.isVisible = adapterPosition == list.lastIndex
             binding.containerIndividual.setOnClickListener {
                 onIndividualClick()
             }

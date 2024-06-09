@@ -1,4 +1,4 @@
-package com.example.edupulse.presentation.ui.auth
+package com.example.nasizae_edu_pulse.presentation.ui.auth.registration
 
 import android.app.Activity
 import android.content.Intent
@@ -23,7 +23,7 @@ class RegistrationFragment : Fragment() {
     private lateinit var binding: FragmentRegistrationBinding
     private lateinit var registrationUseCase: RegistrationUseCase
     private var filePath: Uri? = null
-    private var password=""
+    private var password = ""
     var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK &&
@@ -69,10 +69,15 @@ class RegistrationFragment : Fragment() {
             selectLoadImage()
         }
         binding.btnRegister.setOnClickListener {
-             password = binding.etPassword.text.toString()
-            if (filePath != null && password.length>=8) {
+            password = binding.etPassword.text.toString()
+            if (filePath != null && password.length >= 8) {
                 registrationUseCase =
-                    RegistrationUseCase(requireContext(), findNavController(), filePath!!, layoutInflater = layoutInflater)
+                    RegistrationUseCase(
+                        requireContext(),
+                        findNavController(),
+                        filePath!!,
+                        layoutInflater = layoutInflater
+                    )
                 registrationUseCase.registration(
                     fullName = binding.etFullName.text.toString(),
                     email = binding.etEmail.text.toString(),
@@ -81,7 +86,7 @@ class RegistrationFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Заполните данные и убедитесь, что пароль содержит не менее 8 символов",
+                    "Заполните данные",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -91,14 +96,20 @@ class RegistrationFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 password = s.toString()
-                if (password.length < 8 && !password.isEmpty()) {
+                if (password.length < 8) {
                     binding.etPassword.setError("Пароль должен быть не меньше 8 символов", null)
-                } else {
+                }
+                else if(!password.substring(0,7).matches(Regex("[a-zA-z]+"))){
+                    binding.etPassword.setError("Первые 8 символов пароля должен быть из латинских букв", null)
+                }
+
+                else {
                     binding.etPassword.setError(null)
                 }
             }
         })
     }
+
     private fun selectLoadImage() {
         val intent = Intent()
         intent.type = "image/*"

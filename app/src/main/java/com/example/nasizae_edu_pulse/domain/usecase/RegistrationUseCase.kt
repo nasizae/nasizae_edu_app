@@ -29,14 +29,13 @@ class RegistrationUseCase(private val context:Context, private val navController
                     val user: FirebaseUser? = auth.currentUser
                     val uid = user?.uid
                     if (uid != null) {
-                        user.sendEmailVerification().addOnCompleteListener { verifyEmail ->
-                            if (verifyEmail.isSuccessful) {
-                                createAlertDialog(user,uid,fullName,email,password)
+                        user.sendEmailVerification().addOnSuccessListener {
+                                createAlertDialog(uid,fullName,email,password)
                                     alertDialog.show()
-                            } else {
-                                Log.e("ololo", "registration: ошибка отправки ",)
-                            }
                         }
+                            .addOnFailureListener {
+                                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                            }
                     }
                 }
 
@@ -47,23 +46,32 @@ class RegistrationUseCase(private val context:Context, private val navController
     }
 
     private fun createAlertDialog(
-        user: FirebaseUser,
         uid: String,
         fullName: String,
         email: String,
         password: String
     ) {
+        val user:FirebaseUser?=auth.currentUser
         val alertDialogBuilder=AlertDialog.Builder(context,R.style.CustomAlertDialogStyle)
         val alertDialogBinding=AlertdialogExitAccountBinding.inflate(layoutInflater)
         alertDialogBuilder.setView(alertDialogBinding.root)
         alertDialog=alertDialogBuilder.create()
         alertDialogBinding.btnYes.setOnClickListener {
-                setDataUser(user, uid, fullName, email, password)
+            if (user != null) {
+                user.reload().addOnSuccessListener {
+                    if (user.isEmailVerified) {
+                        setDataUser(uid, fullName, email, password)
+                        alertDialog.dismiss()
+                    }
+                }
+                    .addOnFailureListener {
+                        Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
     }
 
-    private fun setDataUser(user: FirebaseUser,uid: String, fullName: String, email: String, password: String) {
-                if(user.isEmailVerified) {
+    private fun setDataUser(uid: String, fullName: String, email: String, password: String) {
                     storage.getReference().child("image/" + uid).putFile(filePath)
                         .addOnCompleteListener {
                             storage.getReference().child("image/" + uid).downloadUrl
@@ -75,7 +83,7 @@ class RegistrationUseCase(private val context:Context, private val navController
                                     }
                                 }
                         }
-                }
+
 
     }
 
