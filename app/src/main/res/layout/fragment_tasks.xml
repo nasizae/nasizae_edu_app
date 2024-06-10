@@ -42,7 +42,13 @@
         app:layout_constraintStart_toEndOf="@id/container_image"
         app:layout_constraintTop_toTopOf="@id/container_image"
         tools:text="Насиза Эмиль" />
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="@id/tv_username"
+    app:layout_constraintBottom_toBottomOf="@id/tv_username"
+    app:layout_constraintEnd_toEndOf="parent"
+    >
     <ImageButton
         android:id="@+id/btn_awards"
         android:layout_width="34dp"
@@ -52,7 +58,6 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_username"
         app:layout_constraintEnd_toStartOf="@id/btn_health"
         app:layout_constraintTop_toTopOf="@id/tv_username" />
-
     <ImageButton
         android:id="@+id/btn_health"
         android:layout_width="34dp"
@@ -73,6 +78,7 @@
         android:fontFamily="@font/montserrat_alternates"
         android:textColor="@color/black"
         android:textSize="28sp"
+        android:visibility="gone"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btn_health"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,11 +92,11 @@
         android:fontFamily="@font/montserrat_alternates"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:visibility="gone"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btn_health"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btn_health" />
+</LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/container_chapters"

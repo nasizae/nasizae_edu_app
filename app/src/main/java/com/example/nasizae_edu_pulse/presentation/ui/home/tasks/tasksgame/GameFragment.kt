@@ -1,5 +1,7 @@
 package com.example.nasizae_edu_pulse.presentation.ui.home.tasks.tasksgame
 
+import android.media.MediaParser
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -161,6 +163,8 @@ class GameFragment : Fragment() {
         dialog.setContentView(dialogBinding.root)
         dialog.show()
         if (selectButton.text.toString().equals(answer)) {
+           var media=MediaPlayer.create(requireContext(),R.raw.corect_answer)
+            media.let { if(!it.isPlaying) it.start() }
             dialogBinding.container.setBackground(
                 ContextCompat.getDrawable(
                     requireContext(),
@@ -177,6 +181,8 @@ class GameFragment : Fragment() {
             countRightAnswers++
 
         } else {
+            var media=MediaPlayer.create(requireContext(),R.raw.ne_pravilno)
+            media.let { if(!it.isPlaying) it.start() }
             dialogBinding.tvTextRight.text = "Не правильно"
             dialogBinding.tvAnswer.text = selectButton.text.toString()
             dialogBinding.tvAnswer.setTextColor(
@@ -211,7 +217,7 @@ class GameFragment : Fragment() {
             val userStaticModel = UserStaticModel(health = health!!)
             myDataBase.child(uid).child("static").child("userHealth").setValue(userStaticModel)
             if (health == 0) {
-                onDestroy()
+                findNavController().navigate(R.id.homeScreenFragment)
             }
         }
         dialogBinding.btnNext.setOnClickListener {
@@ -234,10 +240,5 @@ class GameFragment : Fragment() {
                 R.drawable.bg_active_btn_answer
             )
         )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        findNavController().navigate(R.id.homeScreenFragment)
     }
 }

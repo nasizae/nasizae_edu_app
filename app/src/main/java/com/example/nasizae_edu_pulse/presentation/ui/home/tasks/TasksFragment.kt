@@ -2,7 +2,6 @@ package com.example.edupulse.presentation.ui.home.tasks
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +47,7 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     private val repositoryImpl = RepositoryImpl()
     private val tasksViewModel = TasksViewModel(repositoryImpl)
     var userLvl = 1
+    private var health: Int = 0
     private val pref: Pref by lazy {
         Pref(requireContext())
     }
@@ -68,8 +68,34 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
         initGetUser()
         initListeners()
         initNextUnClocked()
-        initGetCourseChapter()
         initGetHealth()
+        if (!pref.alertDialogShowed()) {
+            alertDialog.show()
+        }
+        initLoadLvl()
+        initGetCourseChapter()
+    }
+
+    private fun initLoadLvl() {
+        val uid = auth.currentUser?.uid.toString()
+        myDataBase.child(uid).child("static").child("static_in_tasks")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var position=snapshot.getValue(UserDataStaticTasks::class.java)
+                    if(position?.position!=null) {
+                        for (i in 0..position.position!!) {
+                            if(i<list.size){
+                                list[i]=list[i].copy(unClocked = true)
+                            }
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
     }
 
     private fun initGetHealth() {
@@ -80,6 +106,7 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val value = snapshot.getValue(UserStaticModel::class.java)
                     if (value?.health != null) {
+                        health = value.health
                         binding.tvCountHealth.text = value.health.toString()
                         if (value.health < 5) {
                             startTimerHealth(uid, value.health)
@@ -93,19 +120,18 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     }
 
     private fun startTimerHealth(uid: String, health: Int) {
-        val time: Long = 10000L
+        val time: Long = 300000L
         object : CountDownTimer(time, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = (millisUntilFinished / 1000) / 60
                 val seconds = (millisUntilFinished / 1000) % 60
                 if (health == 0) {
-                    binding.tvCountHealth.visibility=View.GONE
-                    binding.tvTimer.visibility=View.VISIBLE
+                    binding.tvCountHealth.visibility = View.GONE
+                    binding.tvTimer.visibility = View.VISIBLE
                     binding.tvTimer.text = String.format("%02d:%02d", minutes, seconds)
-                }
-                else{
-                    binding.tvCountHealth.visibility=View.VISIBLE
-                    binding.tvTimer.visibility=View.GONE
+                } else {
+                    binding.tvCountHealth.visibility = View.VISIBLE
+                    binding.tvTimer.visibility = View.GONE
                 }
             }
 
@@ -127,7 +153,8 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
                 val uid = auth.currentUser?.uid.toString()
                 val userStaticModel = UserDataStaticTasks(
                     countUserLvl = userLvl,
-                    nameThemeWork = "${binding.course.text} ${binding.tvChapterTasks.text}"
+                    nameThemeWork = "${binding.course.text} ${binding.tvChapterTasks.text}",
+
                 )
                 myDataBase.child(uid).child("static").child("static_in_tasks")
                     .setValue(userStaticModel)
@@ -136,14 +163,21 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
 
     private fun initNextUnClocked() {
         val data = arguments?.getString("key")
-        Log.e("ololo", "OnClickData: $data")
         if (data.equals("completed")) {
             userLvl++
             if (position < list.size - 1 && !list[position + 1].unClocked) {
                 list[position + 1] = list[position + 1].copy(unClocked = true)
                 adapter.notifyItemChanged(position + 1)
+                initSaveLvl(position)
             }
         }
+    }
+
+    private fun initSaveLvl(position: Int) {
+        val uid=auth.currentUser?.uid.toString()
+        val pos=UserDataStaticTasks(position=position)
+        myDataBase.child(uid).child("static").child("static_in_tasks")
+            .setValue(pos)
     }
 
     private fun initListeners() {
@@ -184,17 +218,23 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     }
 
     private fun OnClick(possition: Int, countExperience: Int) {
-        val bundle =
-            bundleOf("position" to possition, "count" to countExperience)
-        findNavController().navigate(R.id.gameFragment, bundle)
-//        alertDialogStart(possition,countExperience)
-//        alertDialog.show()
+        if (health > 0) {
+            alertDialogStart(possition, countExperience)
+            alertDialog.show()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "К сожалению у вас 0 жизней наберитесь терпению и дождитесь пока у вас пополниться жизнь",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
         position = possition
     }
 
     private fun alertDialogStart(possition: Int, countExperience: Int) {
-        val alertDialogBuilder=AlertDialog.Builder(requireContext(),R.style.CustomAlertDialogStyle)
-        val alertDialogBinding=AlertDialogStartGameBinding.inflate(layoutInflater)
+        val alertDialogBuilder =
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogStyle)
+        val alertDialogBinding = AlertDialogStartGameBinding.inflate(layoutInflater)
         alertDialogBuilder.setView(alertDialogBinding.root)
         alertDialogBinding.btnStart.setOnClickListener {
             val bundle =
@@ -202,9 +242,9 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
             findNavController().navigate(R.id.gameFragment, bundle)
             alertDialog.dismiss()
         }
-        alertDialogBinding.numberTasks.text=(possition+1).toString()
-        alertDialogBinding.numberExp.text=countExperience.toString()
-        alertDialog=alertDialogBuilder.create()
+        alertDialogBinding.numberTasks.text = (possition + 1).toString()
+        alertDialogBinding.numberExp.text = countExperience.toString()
+        alertDialog = alertDialogBuilder.create()
     }
 
     private fun initLoad() {
@@ -224,9 +264,6 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
 
     private fun initAdapter() {
         adapter = TasksAdapter(list, this::OnClick)
-        if (!pref.alertDialogShowed()) {
-            alertDialog.show()
-        }
         binding.rvTasks.adapter = adapter
     }
 

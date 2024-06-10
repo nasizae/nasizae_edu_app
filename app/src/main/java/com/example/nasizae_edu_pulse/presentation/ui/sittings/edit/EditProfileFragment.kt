@@ -1,11 +1,17 @@
 package com.example.edupulse.presentation.ui.sittings.edit
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.edupulse.data.model.Users
@@ -20,6 +26,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.network.UpdateMetadataNetworkRequest
 import java.util.EventListener
 
@@ -27,7 +34,27 @@ class EditProfileFragment : Fragment() {
     private lateinit var binding: FragmentEditProfileBinding
     private lateinit var myDataBase:DatabaseReference
     private lateinit var auth:FirebaseAuth
+    private lateinit var filePath: Uri
+    private val storage=FirebaseStorage.getInstance()
 
+    var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK &&
+                result.data != null && result.data?.data != null
+            ) {
+                filePath = result.data!!.data!!
+                try {
+                    val bitmap: Bitmap
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                        requireContext().contentResolver,
+                        filePath
+                    )
+                    binding.imgProfile.setImageBitmap(bitmap)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,8 +66,18 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEditProfile()
+
+        initListeners()
+    }
+
+    private fun initListeners() {
         binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.navigation_sittings)
+        }
+        binding.imgProfile.setOnClickListener {
+            val intent= Intent(Intent.ACTION_GET_CONTENT)
+            intent.type="image/*"
+            resultLauncher.launch(intent)
         }
     }
 
@@ -68,8 +105,7 @@ class EditProfileFragment : Fragment() {
                 val fullName=binding.etFullName.text.toString()
                 val email=binding.etEmail.text.toString()
                 val password=binding.etPassword.text.toString()
-                val data= Users(uid,fullName, email, password)
-                myDataBase.child(uid).setValue(data)
+                upDateDataUser(uid,fullName,email,password)
                 if(auth.currentUser!=null) {
                     auth.currentUser?.updatePassword(password)?.addOnCompleteListener {
                         if (it.isSuccessful) {
@@ -78,7 +114,7 @@ class EditProfileFragment : Fragment() {
                             Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    auth.currentUser?.updateEmail(email)?.addOnCompleteListener {
+                    auth.currentUser?.verifyBeforeUpdateEmail(email)?.addOnCompleteListener {
                         if (it.isSuccessful) {
                             Toast.makeText(requireContext(), "good email", Toast.LENGTH_SHORT).show()
                         } else {
@@ -86,6 +122,16 @@ class EditProfileFragment : Fragment() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun upDateDataUser(uid: String, fullName: String, email: String, password: String) {
+        storage.getReference().child("image/"+uid).putFile(filePath).addOnCompleteListener{
+            storage.getReference().child("image/"+uid).downloadUrl.addOnSuccessListener {
+                val data= Users(uid,fullName, email, password,it.toString())
+                myDataBase.child(uid).setValue(data)
+                findNavController().navigate(R.id.navigation_sittings)
             }
         }
     }

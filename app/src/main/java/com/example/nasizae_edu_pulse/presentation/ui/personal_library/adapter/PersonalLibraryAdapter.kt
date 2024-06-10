@@ -8,10 +8,13 @@ import com.example.nasizae_edu_pulse.data.model.PersonalLibraryModel
 import com.example.nasizae_edu_pulse.databinding.ItemLibraryBinding
 
 class PersonalLibraryAdapter(
-    private val list: List<PersonalLibraryModel>,
     private val onItemClick: (numberLinks: Int) -> Unit
 ) : Adapter<PersonalLibraryAdapter.PersonalLibraryHolder>() {
-
+    private var list: List<PersonalLibraryModel> = emptyList()
+    fun updateData(personalLibraryModel: List<PersonalLibraryModel>){
+        list=personalLibraryModel
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonalLibraryHolder {
         return PersonalLibraryHolder(
             ItemLibraryBinding.inflate(

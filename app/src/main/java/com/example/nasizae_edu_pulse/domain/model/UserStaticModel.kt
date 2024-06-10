@@ -6,6 +6,7 @@ data class UserStaticModel(
 data class UserDataStaticTasks(
     val nameThemeWork:String?=null,
     val countUserLvl:Int?=null,
+    val position:Int?=null
 )
 data class UserDataStaticResult(
     val progressNumber:Int=0,

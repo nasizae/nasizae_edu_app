@@ -18,34 +18,21 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 class AwardsFragment : Fragment() {
-    private val firestoreDb=FirebaseFirestore.getInstance()
-    private lateinit var binding:FragmentAwardsBinding
+    private val firestoreDb = FirebaseFirestore.getInstance()
+    private lateinit var binding: FragmentAwardsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding= FragmentAwardsBinding.inflate(inflater,container,false)
+        binding = FragmentAwardsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-                    binding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
-        }
-        initData()
-
-    }
-
-    private fun initData() {
-        val data = firestoreDb.collection("chapters").document("chpater").get()
-        data.addOnSuccessListener { document ->
-            val list=ArrayList<String>()
-            document.data?.values?.joinToString()?.let { list.add(it) }
-            list.forEach {
-                binding.tvTitle.text=it
-            }
         }
     }
 

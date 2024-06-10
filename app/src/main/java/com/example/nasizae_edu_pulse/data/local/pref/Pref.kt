@@ -25,8 +25,6 @@ class Pref(private val context: Context) {
 
     companion object {
         const val SHOWED_KEY = "seen_key"
-        const val SAVE_IMAGE = "save_image"
-        const val NEXT_LEVEL_UNLOCKED_KEY = "second_level_unlocked_key"
         const val KEY_ALERT_SHOW="alert_show"
     }
 }
