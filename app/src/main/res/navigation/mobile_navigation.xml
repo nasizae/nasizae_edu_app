@@ -14,11 +14,6 @@
         android:name="com.example.edupulse.presentation.ui.sittings.SittingsFragment"
         tools:layout="@layout/fragment_sittings" />
     <fragment
-        android:id="@+id/navigation_chat"
-        android:name="com.example.edupulse.presentation.ui.chat.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
-    <fragment
         android:id="@+id/navigation_static"
         android:name="com.example.edupulse.presentation.ui.progress.StaticFragment"
         android:label="fragment_static"
@@ -89,6 +84,8 @@
             app:argType="integer"/>
         <argument android:name="countRightAnswers"
             app:argType="integer"/>
+        <argument android:name="position"
+            app:argType="integer"/>
     </fragment>
     <fragment
         android:id="@+id/homeScreenFragment"
@@ -105,4 +102,36 @@
         android:name="com.example.nasizae_edu_pulse.presentation.ui.auth.authentication.forgot_password.reset_password.ResetPasswordFragment"
         android:label="fragment_reset_password"
         tools:layout="@layout/fragment_reset_password" />
+    <fragment
+        android:id="@+id/themeMessageFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.chat.theme_message.ThemeMessageFragment"
+        android:label="fragment_thame_message"
+        tools:layout="@layout/fragment_thame_message" >
+        <action
+            android:id="@+id/action_themeMessageFragment_to_userChatFragment2"
+            app:destination="@id/userChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userChatFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.chat.UserChatFragment"
+        android:label="fragment_user_chat"
+        tools:layout="@layout/fragment_user_chat">
+        <argument android:name="key"
+            app:argType="string"/>
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaireFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.questionnaire.QuestionnaireFragment"
+        android:label="fragment_questionnaire"
+        tools:layout="@layout/fragment_questionnaire" />
+    <fragment
+        android:id="@+id/javaOrKotlinFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.questionnaire.JavaOrKotlinFragment"
+        android:label="fragment_java_or_kotlin"
+        tools:layout="@layout/fragment_java_or_kotlin" />
+    <fragment
+        android:id="@+id/testLvlFragment"
+        android:name="com.example.nasizae_edu_pulse.presentation.ui.questionnaire.test.TestLvlFragment"
+        android:label="fragment_test_lvl"
+        tools:layout="@layout/fragment_test_lvl" />
 </navigation>

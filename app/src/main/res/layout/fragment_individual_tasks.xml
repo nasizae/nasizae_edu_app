@@ -1,84 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.ui.home.tasks.chapters.individual.IndividualTasksFragment">
-
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_back"
+            android:layout_margin="20dp"
+            android:padding="16dp"/>
 
-        <WebView
-            android:id="@+id/wv_showCode"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        app:cardBackgroundColor="@color/baff"
+        app:cardCornerRadius="16dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/container_individual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/baff"
-            app:cardCornerRadius="16dp"
-            app:layout_constraintTop_toBottomOf="@id/container_image">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/task"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                app:cardCornerRadius="16dp">
 
                 <TextView
-                    android:id="@+id/tv_individual_tasks"
+                    android:id="@+id/tv_tasks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_weight="1"
-                    android:text="Индивидуальное Задание"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_marginVertical="16dp"
+                    android:gravity="center"
+                    android:text="fgdhfvsdbfjdshvfjsdbfhshfvsdjvhjfdsjvj"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_individual_tasks" />
-            </LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="16dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_answer_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/brown"
+                android:layout_marginStart="10dp"
+                app:cornerRadius="16dp"
+                android:textColor="@color/black"
+                android:visibility="invisible"
+                android:textSize="16sp"
+                android:padding="16dp"
+                tools:text="for(int a, a > list.size, a++){" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tv_answer_second"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@color/brown"
+                    android:layout_marginStart="10dp"
+                    app:cornerRadius="16dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:visibility="invisible"
+                    android:padding="16dp"
+                    tools:text="for(int a, a > list.size, a++){" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_answer_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/brown"
+                android:layout_marginStart="10dp"
+                app:cornerRadius="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:visibility="invisible"
+                tools:text="for(int a, a > list.size, a++){" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_answer_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/brown"
+                android:layout_marginStart="10dp"
+                app:cornerRadius="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="invisible"
+                android:padding="16dp"
+                tools:text="for(int a, a > list.size, a++){" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_answer_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/brown"
+                android:layout_marginStart="10dp"
+                app:cornerRadius="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:padding="16dp"
+                tools:text="for(int a, a > list.size, a++){" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_answer_six"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/brown"
+                android:layout_marginStart="10dp"
+                app:cornerRadius="16dp"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:padding="16dp"
+                tools:text="for(int a, a > list.size, a++){" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_answer_seven"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/brown"
+                android:layout_marginStart="10dp"
+                app:cornerRadius="16dp"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:padding="16dp"
+                tools:text="for(int a, a > list.size, a++){" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        >
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            app:cardCornerRadius="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_answer_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            tools:text="for(int a" />
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_answer_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            tools:text="for(int a, a > list.size, a++){" />
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_answer_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            tools:text="for(int a, a" />
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_answer_four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            tools:text="" />
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_answer_five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            tools:text="for(int a, a > list.size, a++){" />
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="#00FFFFFF"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_answer_six"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            tools:text="for" />
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_answer_seven"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="16dp"
+            tools:text="for" />
         </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_weight="1"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/background_et"
-            android:hint="Введите код ">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_add_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:paddingVertical="16dp" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_send_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:text="Отправить код"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:backgroundTint="@color/brown"
-            android:paddingVertical="16dp"
-            app:cornerRadius="16dp"/>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/check"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:paddingVertical="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="40dp"
+            app:cornerRadius="16dp"
+            app:backgroundTint="@color/baff"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+</LinearLayout>

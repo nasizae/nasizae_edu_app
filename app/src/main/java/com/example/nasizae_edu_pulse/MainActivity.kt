@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_personal_library,
                 R.id.navigation_sittings,
                 R.id.navigation_static,
-                R.id.navigation_chat
+                R.id.themeMessageFragment
             )
         )
         val fragmentWithOutButtonNav=setOf(
@@ -47,8 +47,12 @@ class MainActivity : AppCompatActivity() {
             R.id.registrationFragment,
             R.id.resetPasswordFragment,
             R.id.forgotPasswordFragment,
-//            R.id.gameFragment,
-//            R.id.resultScreenFragment
+            R.id.gameFragment,
+            R.id.resultScreenFragment,
+            R.id.individualTasksFragment,
+            R.id.javaOrKotlinFragment,
+            R.id.questionnaireFragment,
+            R.id.testLvlFragment
         )
         supportActionBar?.hide()
         setupActionBarWithNavController(navController, appBarConfiguration)

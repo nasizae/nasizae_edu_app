@@ -198,7 +198,7 @@
                             android:id="@+id/title_static_lvl"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Уровни занятий"
+                            android:text="Текущий уровень"
                             android:textColor="@color/grey"
                             android:fontFamily="@font/montserrat_alternates"
                             android:textStyle="bold"
@@ -290,7 +290,7 @@
                             android:id="@+id/title_static_course"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Текущий уровень"
+                            android:text="Текущий Курс"
                             android:textColor="@color/grey"
                             android:textSize="16sp"
                             android:textStyle="bold"
@@ -303,38 +303,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:text="Достижение"
+                    android:text="История"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat_alternates"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/bg_static"
-                    android:paddingVertical="10dp">
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_history"/>
 
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_cup" />
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_medal" />
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_king" />
-                </LinearLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

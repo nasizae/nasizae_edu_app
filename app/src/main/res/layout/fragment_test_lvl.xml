@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".presentation.ui.home.tasks.tasksgame.GameFragment">
+    tools:context=".presentation.ui.questionnaire.test.TestLvlFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,60 +29,11 @@
             android:layout_marginHorizontal="60dp"
             android:layout_marginVertical="40dp"
             android:max="10"
-            android:progress="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:progressDrawable="@drawable/progress_game_dashed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_back" />
-
-        <ImageView
-            android:id="@+id/container_lvl_user"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/ic_sun"
-            app:layout_constraintBottom_toBottomOf="@id/progress_count_answer"
-            app:layout_constraintEnd_toStartOf="@id/progress_count_answer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/progress_count_answer" />
-
-        <TextView
-            android:id="@+id/tv_count_lvl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:textColor="@color/baff"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/container_lvl_user"
-            app:layout_constraintEnd_toEndOf="@id/container_lvl_user"
-            app:layout_constraintStart_toStartOf="@id/container_lvl_user"
-            app:layout_constraintTop_toTopOf="@id/container_lvl_user" />
-
-        <ImageButton
-            android:id="@+id/btn_health"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/ic_heart"
-            app:layout_constraintBottom_toBottomOf="@id/progress_count_answer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_count_health"
-            app:layout_constraintStart_toEndOf="@id/progress_count_answer"
-            app:layout_constraintTop_toTopOf="@id/progress_count_answer" />
-
-        <TextView
-            android:id="@+id/tv_count_health"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:text="5"
-            android:textColor="@color/black"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/btn_health"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btn_health" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
@@ -100,19 +51,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="32dp"
-            android:layout_gravity="center"
-            android:layout_marginVertical="10dp"
-            >
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="@drawable/ic_tasks"
-                android:layout_margin="10dp"/>
-        </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="32dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="10dp"
+                >
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/ic_tasks"
+                    android:layout_margin="10dp"/>
+            </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/tv_question_tasks"
                 android:layout_width="wrap_content"
@@ -128,19 +79,22 @@
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
         <Button
             android:id="@+id/btn_answer_first"
             android:layout_weight="1"
             android:layout_marginHorizontal="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="180dp"
             android:layout_height="140dp"
             android:text="@string/next"
+            app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/bg_answers"
-            android:paddingVertical="40dp"
             app:cornerRadius="16dp"
             android:textColor="@color/black"
             android:textAllCaps="false"
@@ -150,57 +104,62 @@
         <Button
             android:id="@+id/btn_answer_second"
             android:layout_weight="1"
-            android:layout_marginEnd="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="180dp"
             android:background="@drawable/bg_answers"
             android:layout_height="140dp"
             android:text="@string/next"
-            android:paddingVertical="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="10dp"
             app:cornerRadius="16dp"
+            app:layout_constraintStart_toEndOf="@id/btn_answer_first"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="@color/black"
             android:textAllCaps="false"
             android:textSize="16sp"
             />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <Button
             android:id="@+id/btn_answer_three"
             android:layout_weight="1"
-            android:background="@drawable/bg_answers"
             android:layout_marginHorizontal="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="180dp"
             android:layout_height="140dp"
             android:text="@string/next"
-            android:paddingVertical="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/bg_answers"
             app:cornerRadius="16dp"
             android:textColor="@color/black"
-            app:strokeColor="@color/grey"
-            app:strokeWidth="2dp"
             android:textAllCaps="false"
             android:textSize="16sp"
             />
+
         <Button
             android:id="@+id/btn_answer_four"
             android:layout_weight="1"
-            android:layout_marginEnd="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:text="@string/next"
-            android:paddingVertical="40dp"
-            app:cornerRadius="16dp"
+            android:layout_width="180dp"
             android:background="@drawable/bg_answers"
+            android:layout_height="140dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/next"
+            android:layout_marginStart="10dp"
+            app:cornerRadius="16dp"
+            app:layout_constraintStart_toEndOf="@id/btn_answer_three"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="@color/black"
             android:textAllCaps="false"
             android:textSize="16sp"
             />
-
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_check"
         android:layout_width="match_parent"

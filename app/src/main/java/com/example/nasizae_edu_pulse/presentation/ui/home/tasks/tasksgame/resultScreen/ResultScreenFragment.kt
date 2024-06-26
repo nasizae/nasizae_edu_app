@@ -12,6 +12,7 @@ import com.example.nasizae_edu_pulse.R
 import com.example.nasizae_edu_pulse.databinding.FragmentResultScreenBinding
 import com.example.nasizae_edu_pulse.domain.model.UserDataStaticResult
 import com.example.nasizae_edu_pulse.domain.model.UserStaticModel
+import com.example.nasizae_edu_pulse.domain.model.userResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -77,9 +78,16 @@ class ResultScreenFragment : Fragment() {
         progress += args.experience
         val userStatic = UserDataStaticResult(
             maxCountProgress = maxExperience,
-            progressNumber = progress
+            progressNumber = progress,
+
+        )
+        val userResult=userResult(
+            time = args.time,
+            total = args.countRightAnswers.toInt(),
+            tasksNumber = args.position
         )
         myDataBase.child(uid).child("static").child("static_in_result").setValue(userStatic)
+        myDataBase.child(uid).child("static").child("static_in_user_result").push().setValue(userResult)
     }
 
     private fun initListeners() {

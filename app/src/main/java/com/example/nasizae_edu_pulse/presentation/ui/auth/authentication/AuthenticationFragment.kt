@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.edupulse.data.pref.Pref
 import com.example.edupulse.domain.usecase.LoginUseCase
 import com.example.nasizae_edu_pulse.R
 import com.example.nasizae_edu_pulse.databinding.FragmentAuthenticationBinding
@@ -42,8 +43,10 @@ class AuthenticationFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null) {
-            findNavController().navigate(R.id.homeScreenFragment)
-        } else {
+                findNavController().navigate(R.id.homeScreenFragment)
+
+        }
+        else {
             Toast.makeText(requireContext(), "Сделайте вход", Toast.LENGTH_SHORT).show()
         }
 
@@ -56,6 +59,7 @@ class AuthenticationFragment : Fragment() {
                 binding.etEmail.text.toString(),
                 binding.etPassword.text.toString()
             )
+
         }
 
     }

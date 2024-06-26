@@ -17,6 +17,10 @@ import com.example.edupulse.domain.usecase.GetUserDataUseCase
 import com.example.edupulse.domain.usecase.RegistrationUseCase.Companion.USER
 import com.example.edupulse.presentation.ui.home.tasks.adapter.TasksAdapter
 import com.example.nasizae_edu_pulse.R
+import com.example.nasizae_edu_pulse.data.model.Chapter
+import com.example.nasizae_edu_pulse.data.model.ChapterModel
+import com.example.nasizae_edu_pulse.data.model.Question
+import com.example.nasizae_edu_pulse.data.model.Quiz
 import com.example.nasizae_edu_pulse.databinding.AlertDialogStartGameBinding
 import com.example.nasizae_edu_pulse.databinding.AlertdialogTasksBinding
 import com.example.nasizae_edu_pulse.databinding.FragmentTasksBinding
@@ -34,6 +38,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 
 class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
@@ -46,8 +51,8 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     private val auth = FirebaseAuth.getInstance()
     private val repositoryImpl = RepositoryImpl()
     private val tasksViewModel = TasksViewModel(repositoryImpl)
-    var userLvl = 1
-    private var health: Int = 0
+    var userLvl: Int = 1
+    private var health: Int = 5
     private val pref: Pref by lazy {
         Pref(requireContext())
     }
@@ -75,27 +80,19 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
         initLoadLvl()
         initGetCourseChapter()
     }
-
     private fun initLoadLvl() {
         val uid = auth.currentUser?.uid.toString()
-        myDataBase.child(uid).child("static").child("static_in_tasks")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    var position=snapshot.getValue(UserDataStaticTasks::class.java)
-                    if(position?.position!=null) {
-                        for (i in 0..position.position!!) {
-                            if(i<list.size){
-                                list[i]=list[i].copy(unClocked = true)
-                            }
-                        }
-                        adapter.notifyDataSetChanged()
+        myDataBase.child(uid).child("static").child("static_in_lvl").get().addOnSuccessListener {
+            var position = it.value as? Long
+            if (position != null) {
+                for (i in 0..position.toInt()) {
+                    if (i < list.size) {
+                        list[i] = list[i].copy(unClocked = true)
                     }
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                }
-
-            })
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun initGetHealth() {
@@ -144,48 +141,58 @@ class TasksFragment : Fragment(), GetUserDataUseCase.CallBack {
     }
 
     private fun initGetCourseChapter() {
-        firestoreDb.collection(CHAPTER_COLLECTION).document(CHAPTER_DOCUMENT).get()
-            .addOnSuccessListener {
-                val chapterName = it.get(CHAPTER_NAME) as? List<String>
-                val chapterCourse = it.get(CHAPTER_COURSE) as? List<String>
-                binding.tvChapterTasks.text = chapterName?.get(0).toString()
-                binding.course.text = chapterCourse?.get(0).toString()
-                val uid = auth.currentUser?.uid.toString()
-                val userStaticModel = UserDataStaticTasks(
-                    countUserLvl = userLvl,
-                    nameThemeWork = "${binding.course.text} ${binding.tvChapterTasks.text}",
-
-                )
-                myDataBase.child(uid).child("static").child("static_in_tasks")
-                    .setValue(userStaticModel)
+        val uid = auth.currentUser?.uid.toString()
+        myDataBase.child(uid).child("userlvlQuestionnaire").get().addOnSuccessListener {
+            val value = it.value
+            var data = ""
+            if (value == "Начинающий") {
+                data = "chapterFirstLVL"
+            } else if (value == "Средний") {
+                data = "chapterAverageLVL"
+            } else if (value == "Продвинутый") {
+                data = "chapterAdvanceLVL"
             }
+            firestoreDb.collection(CHAPTER_COLLECTION).document(data).get()
+                .addOnSuccessListener {
+                    val chapter = it.toObject(Chapter::class.java)
+                    if (chapter != null) {
+                        binding.tvChapterTasks.text = chapter.chapter.get(0).chapterName
+                        binding.course.text = chapter.chapter.get(0).course
+
+                    }
+                    val userStaticModel = UserDataStaticTasks(
+                        countUserLvl = userLvl,
+                        nameThemeWork = "${binding.course.text} ${binding.tvChapterTasks.text}",
+
+                        )
+                    myDataBase.child(uid).child("static").child("static_in_tasks")
+                        .setValue(userStaticModel)
+                }
+        }
     }
 
     private fun initNextUnClocked() {
         val data = arguments?.getString("key")
         if (data.equals("completed")) {
-            userLvl++
             if (position < list.size - 1 && !list[position + 1].unClocked) {
                 list[position + 1] = list[position + 1].copy(unClocked = true)
                 adapter.notifyItemChanged(position + 1)
+                position += 1
                 initSaveLvl(position)
+                userLvl = userLvl.plus(position)
             }
         }
     }
 
     private fun initSaveLvl(position: Int) {
-        val uid=auth.currentUser?.uid.toString()
-        val pos=UserDataStaticTasks(position=position)
-        myDataBase.child(uid).child("static").child("static_in_tasks")
-            .setValue(pos)
+        val uid = auth.currentUser?.uid.toString()
+        myDataBase.child(uid).child("static").child("static_in_lvl")
+            .setValue(position)
     }
 
     private fun initListeners() {
         binding.containerChapters.setOnClickListener {
             findNavController().navigate(R.id.chaptersFragment)
-        }
-        binding.btnAwards.setOnClickListener {
-            findNavController().navigate(R.id.awardsFragment)
         }
     }
 

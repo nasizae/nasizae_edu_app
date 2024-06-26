@@ -23,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 class RepositoryImpl : Repository {
     private val myDataBase = Firebase.database.getReference(USER)
     private val fireStore = FirebaseFirestore.getInstance()
+    var data=""
     override fun fetchGetUserData(auth: FirebaseAuth): LiveData<Users> {
         val user = MutableLiveData<Users>()
         val uid = auth.currentUser?.uid.toString()
@@ -40,16 +41,28 @@ class RepositoryImpl : Repository {
 
     override fun fetchGetDataChapters(): LiveData<Chapter> {
         val chapters = MutableLiveData<Chapter>()
-        fireStore.collection(CHAPTER_COLLECTION).document(CHAPTER_DOCUMENT).get()
-            .addOnSuccessListener {
-                if(it!=null) {
-                    val value = it.toObject(Chapter::class.java)
-                    chapters.value = value!!
+        val auth=FirebaseAuth.getInstance()
+        val uid = auth.currentUser?.uid.toString()
+        myDataBase.child(uid).child("userlvlQuestionnaire").get().addOnSuccessListener {
+            val value = it.value
+            if (value == "Начинающий") {
+                data = "chapterFirstLVL"
+            } else if (value == "Средний") {
+                data = "chapterAverageLVL"
+            } else if (value == "Продвинутый") {
+                data = "chapterAdvanceLVL"
+            }
+            fireStore.collection(CHAPTER_COLLECTION).document(data).get()
+                .addOnSuccessListener {
+                    if (it != null) {
+                        val value = it.toObject(Chapter::class.java)
+                        chapters.value = value!!
+                    }
                 }
-            }
-            .addOnFailureListener {
-                Log.e("ololo", "fetchGetDataChapters:$it", )
-            }
+                .addOnFailureListener {
+                    Log.e("ololo", "fetchGetDataChapters:$it",)
+                }
+        }
         return chapters
     }
 }

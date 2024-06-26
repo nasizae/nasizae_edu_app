@@ -8,3 +8,11 @@ data class Users(
     val image:String?=null,
     val message:String?=null,
 )
+
+data class UserAnswersQuestionnaire(
+    val question:String?=null,
+    val userAnswer:String?=null
+)
+
+
+

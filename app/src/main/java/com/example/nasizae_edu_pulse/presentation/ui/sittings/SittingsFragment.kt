@@ -11,17 +11,21 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.edupulse.data.model.Users
 import com.example.edupulse.domain.usecase.GetUserDataUseCase
+import com.example.edupulse.domain.usecase.RegistrationUseCase.Companion.USER
 import com.example.nasizae_edu_pulse.R
 import com.example.nasizae_edu_pulse.databinding.AlertdialogExitAccountBinding
 import com.example.nasizae_edu_pulse.databinding.FragmentSittingsBinding
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.database
 
-class SittingsFragment : Fragment(),GetUserDataUseCase.CallBack{
+class SittingsFragment : Fragment(), GetUserDataUseCase.CallBack {
 
     private lateinit var binding: FragmentSittingsBinding
     private lateinit var alertDialog: AlertDialog
-    private val getUserDataUseCase=GetUserDataUseCase()
-    private val auth=FirebaseAuth.getInstance()
+    private val getUserDataUseCase = GetUserDataUseCase()
+    private val auth = FirebaseAuth.getInstance()
+    private val myDataBase = Firebase.database.getReference(USER)
 
 
     override fun onCreateView(
@@ -41,8 +45,9 @@ class SittingsFragment : Fragment(),GetUserDataUseCase.CallBack{
     }
 
     private fun getProfile() {
-       getUserDataUseCase.getUser(this)
+        getUserDataUseCase.getUser(this)
     }
+
     private fun initListeners() {
         binding.btnExit.setOnClickListener {
             initAlertDialogExit()
@@ -54,10 +59,11 @@ class SittingsFragment : Fragment(),GetUserDataUseCase.CallBack{
     }
 
     private fun initAlertDialogExit() {
-        val alertDialogBuilder=AlertDialog.Builder(requireContext(),R.style.CustomAlertDialogStyle)
-        val alertDialogBinding= AlertdialogExitAccountBinding.inflate(layoutInflater)
+        val alertDialogBuilder =
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialogStyle)
+        val alertDialogBinding = AlertdialogExitAccountBinding.inflate(layoutInflater)
         alertDialogBuilder.setView(alertDialogBinding.root)
-        alertDialog=alertDialogBuilder.create()
+        alertDialog = alertDialogBuilder.create()
         alertDialogBinding.btnYes.setOnClickListener {
             auth.signOut()
             findNavController().navigate(R.id.authenticationFragment)
@@ -68,9 +74,10 @@ class SittingsFragment : Fragment(),GetUserDataUseCase.CallBack{
         }
         alertDialog.show()
     }
+
     override fun onUserReceived(users: Users) {
-        binding.tvEmail.text=users.email
-        binding.tvUsername.text=users.fullName
+        binding.tvEmail.text = users.email
+        binding.tvUsername.text = users.fullName
         Glide.with(binding.imgProfile).load(users.image).into(binding.imgProfile)
     }
 

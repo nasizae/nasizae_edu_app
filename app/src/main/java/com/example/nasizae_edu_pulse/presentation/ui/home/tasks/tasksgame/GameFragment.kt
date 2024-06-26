@@ -89,34 +89,50 @@ class GameFragment : Fragment() {
     private fun initGetData() {
         val countExperience = arguments?.getInt("count")
         val quizPosition = arguments?.getInt("position")
-        firestoreDb.collection("Questions").document("question" + quizPosition).get()
-            .addOnSuccessListener {
-                val data = it.toObject(Quiz::class.java)
-                if (data != null) {
-                    if (position < data.questions.size) {
-                        question = data.questions[position]
-                        binding.btnAnswerFirst.text = question.answers.get(0)
-                        binding.btnAnswerSecond.text = question.answers.get(1)
-                        binding.btnAnswerThree.text = question.answers.get(2)
-                        binding.btnAnswerFour.text = question.answers.get(3)
-                        binding.tvQuestionTasks.text = question.questionText
-                        explanation = question.explanation.toString()
-                        answer = question.correctAnswer.toString()
-                    } else {
-                        val totalCountRightAnswers = (countRightAnswers * 100) / data.questions.size
-                        stopQuizTimer()
-                        if (countExperience != null) {
-                            findNavController().navigate(
-                                GameFragmentDirections.actionGameFragmentToResultScreenFragment(
-                                    time,
-                                    countExperience,
-                                    totalCountRightAnswers
+        val auth = FirebaseAuth.getInstance()
+        val uid = auth.currentUser?.uid.toString()
+        myDataBase.child(uid).child("userlvlQuestionnaire").get().addOnSuccessListener {
+            val value = it.value
+            var data = ""
+            if (value == "Начинающий") {
+                data = "QuestionsFirst"
+            } else if (value == "Средний") {
+                data = "QuestionsAverage"
+            } else if (value == "Продвинутый") {
+                data = "QuestionsAdvance"
+            }
+            firestoreDb.collection(data + quizPosition)
+                .document(data + quizPosition).get()
+                .addOnSuccessListener {
+                    val data = it.toObject(Quiz::class.java)
+                    if (data != null) {
+                        if (position < data.questions.size) {
+                            question = data.questions[position]
+                            binding.btnAnswerFirst.text = question.answers.get(0)
+                            binding.btnAnswerSecond.text = question.answers.get(1)
+                            binding.btnAnswerThree.text = question.answers.get(2)
+                            binding.btnAnswerFour.text = question.answers.get(3)
+                            binding.tvQuestionTasks.text = question.questionText
+                            explanation = question.explanation.toString()
+                            answer = question.correctAnswer.toString()
+                        } else {
+                            val totalCountRightAnswers =
+                                (countRightAnswers * 100) / data.questions.size
+                            stopQuizTimer()
+                            if (countExperience != null) {
+                                findNavController().navigate(
+                                    GameFragmentDirections.actionGameFragmentToResultScreenFragment(
+                                        time,
+                                        countExperience,
+                                        totalCountRightAnswers,
+                                        quizPosition!!
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
-            }
+        }
     }
 
     private fun initListeners() {
@@ -224,7 +240,7 @@ class GameFragment : Fragment() {
             position++
             countQuestion++
             binding.tvCountLvl.text = countQuestion.toString()
-            binding.progressCountAnswer.progress = countQuestion
+            binding.progressCountAnswer.progress +=1
             dialog.dismiss()
             initGetData()
         }

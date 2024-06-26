@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".presentation.ui.questionnaire.QuestionnaireFragment">
+<ProgressBar
+    android:id="@+id/progress_question"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:progress="0"
+    android:max="5"
+    android:layout_marginTop="40dp"
+    android:layout_marginHorizontal="20dp"
+    android:progressDrawable="@drawable/progress_dashed"
+    />
+    <TextView
+        android:id="@+id/tv_count_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Вопрос 1"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        />
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="вопрос"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_margin="20dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginTop="40dp"
+        app:cardElevation="16dp"
+        >
+
+        <RadioGroup
+            android:id="@+id/radioGroupFirst"
+            android:layout_width="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/rbAnswerFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Начинающий"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="26dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+            <RadioButton
+                android:id="@+id/rbAnswerSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Начинающий"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+            <RadioButton
+                android:id="@+id/rbAnswerThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Начинающий"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+            <RadioButton
+                android:id="@+id/rbAnswerFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Начинающий"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="20dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"/>
+        </RadioGroup>
+    </androidx.cardview.widget.CardView>
+
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_continue"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/next"
+    android:textColor="@color/white"
+    android:gravity="center"
+    android:layout_marginTop="40dp"
+    android:layout_marginHorizontal="40dp"
+    android:paddingVertical="20dp"
+    app:cornerRadius="16dp"
+    android:textSize="16sp"
+    app:backgroundTint="@color/brown"/>
+
+</LinearLayout>

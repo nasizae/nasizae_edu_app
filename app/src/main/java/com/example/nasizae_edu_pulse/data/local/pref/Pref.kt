@@ -23,8 +23,25 @@ class Pref(private val context: Context) {
     }
 
 
+    fun isQuestionnaireShow(): Boolean {
+        return pref.getBoolean(QUESTIONNAIRE_SHOW, false)
+    }
+
+    fun onQuestionnaireShowed() {
+        pref.edit().putBoolean(QUESTIONNAIRE_SHOW, true).apply()
+    }
+    fun isJavaOrKotlinShow(): Boolean {
+        return pref.getBoolean(JAVAORKOTLIN_SHOW, false)
+    }
+
+    fun onJavaOrKotlinShowed() {
+        pref.edit().putBoolean(JAVAORKOTLIN_SHOW, true).apply()
+    }
+
     companion object {
         const val SHOWED_KEY = "seen_key"
         const val KEY_ALERT_SHOW="alert_show"
+        const val QUESTIONNAIRE_SHOW="questionnaire"
+        const val JAVAORKOTLIN_SHOW="javaorkotlin"
     }
 }

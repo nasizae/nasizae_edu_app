@@ -32,4 +32,5 @@
     <string name="input_fullname">Введите ваше Фамилия Имя</string>
     <string name="input_email">Введите вашу действующую почту</string>
     <string name="input_password">Пароль должен быть не меньше 8 символов</string>
+    <string name="task">Задание</string>
 </resources>

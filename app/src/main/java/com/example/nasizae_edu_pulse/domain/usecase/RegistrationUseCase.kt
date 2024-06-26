@@ -5,12 +5,15 @@ import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.NavController
 import com.example.edupulse.data.model.Users
+import com.example.edupulse.data.pref.Pref
 import com.example.nasizae_edu_pulse.R
 import com.example.nasizae_edu_pulse.databinding.AlertdialogExitAccountBinding
+import com.example.nasizae_edu_pulse.domain.model.UserStaticModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -22,6 +25,7 @@ class RegistrationUseCase(private val context:Context, private val navController
     private val auth = FirebaseAuth.getInstance()
     private val storage = FirebaseStorage.getInstance()
     private lateinit var alertDialog: AlertDialog
+    private val pref= Pref(context)
     fun registration(fullName: String, email: String, password: String,) {
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && filePath != null) {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
@@ -56,6 +60,9 @@ class RegistrationUseCase(private val context:Context, private val navController
         val alertDialogBinding=AlertdialogExitAccountBinding.inflate(layoutInflater)
         alertDialogBuilder.setView(alertDialogBinding.root)
         alertDialog=alertDialogBuilder.create()
+        alertDialogBinding.tvDesc.text="Пожалуйста войдите на вашу почту и подтвердите его"
+        alertDialogBinding.btnCancel.visibility=View.GONE
+        alertDialogBinding.btnYes.text="Подтвердил"
         alertDialogBinding.btnYes.setOnClickListener {
             if (user != null) {
                 user.reload().addOnSuccessListener {
@@ -79,7 +86,14 @@ class RegistrationUseCase(private val context:Context, private val navController
                                     val userData =
                                         Users(uid, fullName, email, password, it.toString())
                                     myDataBase.child(uid).setValue(userData).addOnSuccessListener {
-                                        navController.navigate(R.id.homeScreenFragment)
+                                        if(!pref.isQuestionnaireShow()) {
+                                            navController.navigate(R.id.questionnaireFragment)
+                                            val userStaticModel = UserStaticModel(health = 5)
+                                            myDataBase.child(uid).child("static").child("userHealth").setValue(userStaticModel)
+                                        }
+                                        else{
+                                            navController.navigate(R.id.homeScreenFragment)
+                                        }
                                     }
                                 }
                         }

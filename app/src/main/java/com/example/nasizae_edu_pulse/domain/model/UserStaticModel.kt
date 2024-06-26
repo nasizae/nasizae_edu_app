@@ -6,10 +6,15 @@ data class UserStaticModel(
 data class UserDataStaticTasks(
     val nameThemeWork:String?=null,
     val countUserLvl:Int?=null,
-    val position:Int?=null
 )
 data class UserDataStaticResult(
     val progressNumber:Int=0,
     val maxCountProgress:Int=0,
+
+)
+data class userResult(
+    val time:String?=null,
+    val total:Int?=null,
+    val tasksNumber:Int?=null
 )
 
